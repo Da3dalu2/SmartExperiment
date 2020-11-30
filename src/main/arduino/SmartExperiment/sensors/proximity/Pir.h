@@ -7,7 +7,7 @@ class Pir: public Proximity {
  
 public: 
     Pir(uint8_t pin);
-    bool detectMotion();
+    bool isMotionDetected();
     void calibrate();
 
 private:

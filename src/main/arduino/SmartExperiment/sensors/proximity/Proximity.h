@@ -7,7 +7,7 @@
 class Proximity: public Interruptible {
 
 public:
-    virtual bool detectMotion();
+    virtual bool isMotionDetected() = 0;
 };
 
 #endif // __PROXIMITY_H_

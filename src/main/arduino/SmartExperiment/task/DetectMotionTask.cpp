@@ -1,36 +1,29 @@
 #include "DetectMotionTask.h"
 
-/**
- * Should be activated with |active|.
- * Activates dependant tasks in |attachedActivables[]|.
- */
+// file scope static variable
+static volatile uint8_t movement;
 
 DetectMotionTask::DetectMotionTask(uint8_t pin) {
     this->pin = pin;
-    this->movement = false;
-}
- 
-void DetectMotionTask::init(uint16_t period) {
-    Task::init(period);
-    pir = new Pir(pin);
-    pir.calibrate();
-    pir.attachInterrupt(onMotionDetected);
+    movement = false;
+    this->pir = new Pir(pin);
 }
 
-void onMotionDetected() {
+void DetectMotionTask::init(uint16_t period) {
+    Task::init(period); 
+    pir->calibrate();
+    pir->attachInterrupt(onMotionDetected);
+}
+
+static void onMotionDetected() {
     movement = true;
 }
 
 void DetectMotionTask::tick() {
-     switch (movement) {
-     case false:
-          if ( motionDetected )
-               taskDirector.notifyMotionDetectedChange(false);
-          break;
-     case true:
+     if ( movement ) {
           movement = false;
-          taskDirector.notifyMotionDetectedChange(true);
-          break;
+          taskDirector.notifyMotionDetectedChange(  *this, 
+                                                    pir->isMotionDetected());
      }
 }
 

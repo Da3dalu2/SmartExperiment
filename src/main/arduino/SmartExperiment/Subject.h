@@ -19,7 +19,7 @@ public:
 
     void notifyObservers() {
         for (Observer* ob : observers)
-            ob.update(*this);
+            ob->update(*this);
     }
 
 private:

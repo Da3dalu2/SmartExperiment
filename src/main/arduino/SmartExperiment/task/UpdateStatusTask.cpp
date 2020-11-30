@@ -1,12 +1,11 @@
 #include "UpdateStatusTask.h"
 
-UpdateStatusTask::UpdateStatusTask(TaskDirector& taskDirector) {
+UpdateStatusTask::UpdateStatusTask() {
     this->startButtonPressed = false;
     this->objectDetected = false;
     this->endButtonPressed = false;
     this->motionDetected = false;
     this->oCurrentState = std::make_optional(new ReadyState(*this));
-    this->taskDirector = taskDirector;
 }
 
 void UpdateStatusTask::init(uint16_t period) {

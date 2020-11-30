@@ -2,12 +2,8 @@
 
 /**
  * Rate-monotonic scheduling. Static. From minor to maior period.
- * Concurrent execution through interrupts.
- *
- * 1. Wire dependecies infrastructure;
- * 2. Deactivate initial unused tasks.
- *
- * NOTE: No |removeTask()|.
+ * List of tasks. Present are active, absent are inactive.
+ * Looped by the scheduler.
  */ 
 void timerHandler(void){}
 
@@ -26,6 +22,10 @@ bool Scheduler::addTask(Task* task) {
           return true;
      } else
           return false; 
+}
+
+bool Scheduler::rmvTask(Task* task) {
+     taskList[nTasks]
 }
   
 void Scheduler::schedule() {   

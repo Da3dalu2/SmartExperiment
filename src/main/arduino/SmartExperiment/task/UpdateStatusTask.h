@@ -6,13 +6,13 @@
 #include "Task.h"
 #include "Subject.h"
 #include "TaskDirector.h"
+#include "Communicator.h"
 #include <optional>
 
-class UpdateStatusTask: public Task, public Subject {
+class UpdateStatusTask: public Task, public Subject, public Communicator {
 
 public:
-    UpdateStatusTask(); // REVIEW: why ReadyState requires a default constructor?
-    UpdateStatusTask(TaskDirector& taskDirector);
+    UpdateStatusTask();
     void init(uint16_t period);
     void tick();
     void setMotionDetected(bool motionDetected);
@@ -35,8 +35,6 @@ private:
     bool endButtonPressed;
     bool motionDetected;
     bool endConfirmationReceived;
-    TaskDirector taskDirector;
-
 };
 
 #endif // __UPDATE_STATUS_TASK_H_

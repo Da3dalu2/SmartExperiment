@@ -7,7 +7,7 @@ class Observer {
 
 public:
     virtual ~Observer() = default;
-    virtual void update(Subject&);
+    virtual void update(Subject& subject) = 0;
         
 };
 

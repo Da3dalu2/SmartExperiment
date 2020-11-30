@@ -1,39 +1,35 @@
 #include "ButtonImpl.h"
 #include "Arduino.h"
 
-ButtonImpl::ButtonImpl(uint8_t pin, uint8_t delay) {
+/**
+ * If delay is 50 and the period of the task is 10, debounceDelay must be 5.
+ * So delay should be 5 and should be set by the task that knows its period.
+ */ 
+ButtonImpl::ButtonImpl(uint8_t pin, uint16_t delay) {
      this->pin = pin;
-//   this->current_state = LOW;
-     this->lastStableState = LOW;
+     this->currentState = LOW;
+     /*this->lastStableState = LOW;
      this->lastUnstableState = LOW;
      this->lastDebounceTime = 0;
      this->debounceDelay = delay;
-     
+     this->pressed = false;*/
+
      pinMode(pin, INPUT); 
 } 
 
+void ButtonImpl::updateState() {
+     uint8_t currentState = digitalRead(pin);
+     /*if ( lastUnstableState == lastStableState &&
+      lastDebounceTime < debounceDelay) {
+          lastDebounceTime++;
+     } else if ( lastUnstableState != lastStableState &&
+      lastDebounceTime >= debounceDelay ) {
+          lastDebounceTime = 0;
+          currentState = lastStableState;
+     }*/
+}
+
 bool ButtonImpl::isPressed() {
-
-     uint8_t current_state = digitalRead(pin);
-     bool is_pressed = false;
-     
-     if( current_state != lastUnstableState ) {
-          this->lastDebounceTime = millis();
-          this->lastUnstableState = current_state;
-          Serial.print("current unstable button state: ");
-          Serial.println(lastUnstableState);
-     }
-
-     if( (millis() - lastDebounceTime) > debounceDelay ) {
-          if ( current_state != lastStableState ) {
-               if ( lastStableState == HIGH && current_state == LOW ) {     
-                    Serial.print("Button pressed");
-                    is_pressed = true;
-               }
-          }
-          
-          this->lastStableState = current_state;
-     }
-
-     return is_pressed;
+     this->updateState();
+     return currentState;
 }

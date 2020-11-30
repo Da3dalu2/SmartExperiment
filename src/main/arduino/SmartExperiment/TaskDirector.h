@@ -15,8 +15,10 @@ public:
     TaskDirector();
     void registerUpdateStatusTask(std::optional<UpdateStatusTask*>);
     void deregisterUpdateStatusTask();
-    void notifyMotionDetectedChange(UpdateStatusTask& s, bool d);
-    void notifyObjectDetectedChange(UpdateStatusTask& s, bool d);
+    void notifyMotionDetectedChange(Task& sender, bool motionDetected);
+    void notifyObjectDetectedChange(Task& sender, bool objectDetected);
+    void notifyStartButtonPression(Task& sender, bool startButtonPressed);
+    void notifyEndButtonPression(Task& sender, bool endButtonPressed);
 
 private:
     void checkUpdateStatusTask();

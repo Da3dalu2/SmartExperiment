@@ -2,9 +2,8 @@
 #define __BUTTON_H_
 
 #include "SmartExperiment.h"
-#include "Debounced.h"
 
-class Button: public Debounced {
+class Button {
 
 public: 
      virtual bool isPressed() = 0;

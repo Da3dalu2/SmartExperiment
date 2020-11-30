@@ -9,7 +9,7 @@ Pir::Pir(uint8_t pin) {
     pinMode(pin, INPUT);
 }
 
-bool Pir::detectMotion() {
+bool Pir::isMotionDetected() {
     bool sensor_value = digitalRead(pin);
     if ( sensor_value != pirState )
         pirState = sensor_value;
