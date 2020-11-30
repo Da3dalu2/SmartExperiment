@@ -2,24 +2,28 @@
 #define __SCHEDULER_H_
 
 #include "Task.h"
+#include "SchedulerManager.h"
 #include <avr/sleep.h>
 #include <avr/power.h>
 #include <libs/Timer1.h>
+
 #define MAX_TASKS 50
 
 class Scheduler {
   
 public:
+     Scheduler(SchedulerManager* schedMgr);
      void init(uint16_t basePeriod);  
-     virtual bool addTask(Task* task);  
-     virtual void schedule();
+     bool addTask(Task* task);  
+     void schedule();
+     Task* getTaskList();
 
 private:
      void sleep();
-     int basePeriod;
-     int nTasks;
-     Task* taskList[MAX_TASKS];  
-
+     uint8_t basePeriod;
+     uint8_t nTasks;
+     SchedulerManager* schedMgr;
+     Task* taskList[MAX_TASKS];
 };
 
 #endif  // __SCHEDULER_H_

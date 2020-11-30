@@ -1,4 +1,5 @@
 #include "Scheduler.h"
+#include "SchedulerManager.h"
 #include <map>
 
 Scheduler* scheduler;
