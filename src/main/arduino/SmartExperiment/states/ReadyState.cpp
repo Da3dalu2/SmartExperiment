@@ -21,6 +21,7 @@ void ReadyState::execute() {
     }  else if ( startButtonPressed && objectDetected ) {  
         task.updateState(*new RunningState(task));
     }  else if ( startButtonPressed && !objectDetected ) {
-        task.updateState(*new SuspendedState(task));
+        task.updateState(*new ErrorState(task, 
+            "no objects detected, the experiment cannot begin"));
     }
 }

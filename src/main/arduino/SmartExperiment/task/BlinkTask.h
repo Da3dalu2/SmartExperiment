@@ -1,14 +1,14 @@
 #ifndef __BLINK_TASK_H_
 #define __BLINK_TASK_H_
 
-#include "../Task.h"
-#include "../actuators/light/Led.h"
+#include "Task.h"
+#include "Led.h"
 
 class BlinkTask: public Task {
 
 public:
      BlinkTask(uint8_t pin);  
-     void init(uint8_t period);  
+     void init(uint16_t period);  
      void tick();
 
 private:

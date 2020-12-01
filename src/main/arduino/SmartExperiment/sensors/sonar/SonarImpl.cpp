@@ -1,12 +1,10 @@
 #include "SonarImpl.h"
-#include "Arduino.h"
-#include <math.h>
 
 /**
  * REVIEW: If delayMicroseconds uses Timer2 and the servo uses also the
  * same timer, what happens?
  */ 
-SonarImpl::SonarImpl(uint8_t trigPin, uint8_t echoPin, \
+SonarImpl::SonarImpl(uint8_t trigPin, uint8_t echoPin,
                      uint8_t currentTemperatureCelsius) {
     this->currentTemperatureCelsius = currentTemperatureCelsius;
     this->variance = 0;

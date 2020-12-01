@@ -1,15 +1,14 @@
 #include "Led.h"
-#include "Arduino.h"
 
-Led::Led(uint8_t pin){
-  this->pin = pin;
-  pinMode(pin,OUTPUT);
+Led::Led(uint8_t pin) {
+    this->pin = pin;
+    pinMode(pin,OUTPUT);
 }
 
-void Led::switchOn(){
-  digitalWrite(pin, HIGH);
+void Led::switchOn() {
+    digitalWrite(pin, HIGH);
 }
 
-void Led::switchOff(){
-  digitalWrite(pin, LOW);
+void Led::switchOff() {
+    digitalWrite(pin, LOW);
 };

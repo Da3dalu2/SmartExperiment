@@ -1,7 +1,7 @@
 #ifndef __SERVO_MOTOR_H_
 #define __SERVO_MOTOR_H_
 
-#include "../../SmartExperiment.h"
+#include "SmartExperiment.h"
 
 class ServoMotor {
 

@@ -7,7 +7,7 @@
 
 #define MAX_TIME 20
 
-class RunningState: public State {
+class RunningState final: public State {
 
 public:
     RunningState(UpdateStatusTask& task);

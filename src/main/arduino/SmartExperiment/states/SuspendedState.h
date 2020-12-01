@@ -5,7 +5,7 @@
 #include "ReadyState.h"
 #include "UpdateStatusTask.h"
 
-class SuspendedState: public State {
+class SuspendedState final: public State {
 
 public:
     SuspendedState(UpdateStatusTask& task);

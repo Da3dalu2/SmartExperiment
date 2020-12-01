@@ -4,7 +4,7 @@ BlinkTask::BlinkTask(uint8_t pin) {
      this->pin = pin;
 }
   
-void BlinkTask::init(int period) {
+void BlinkTask::init(uint16_t period) {
      Task::init(period);
      led = new Led(pin); 
      state = OFF;    

@@ -1,7 +1,7 @@
 #include "DetectMotionTask.h"
 
 // file scope static variable
-static volatile uint8_t movement;
+static volatile bool movement;
 
 DetectMotionTask::DetectMotionTask(uint8_t pin) {
     this->pin = pin;
@@ -20,10 +20,10 @@ static void onMotionDetected() {
 }
 
 void DetectMotionTask::tick() {
-     if ( movement ) {
-          movement = false;
-          taskDirector.notifyMotionDetectedChange(  *this, 
-                                                    pir->isMotionDetected());
-     }
+    if ( movement ) {
+        movement = false;
+        taskDirector.notifyMotionDetectedChange(*this, 
+                                                pir->isMotionDetected());
+    }
 }
 

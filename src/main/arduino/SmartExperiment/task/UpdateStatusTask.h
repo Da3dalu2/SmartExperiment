@@ -20,8 +20,8 @@ public:
     void setStartButtonPressed(bool startButtonPressed);
     void setEndButtonPressed(bool endButtonPressed);
     void setEndConfirmationReceived(bool endConfirmationReceived);
-    bool UpdateStatusTask::isMotionDetected();
-    bool UpdateStatusTask::isObjectDetected();
+    bool isMotionDetected();
+    bool isObjectDetected();
     bool isStartButtonPressed();
     bool isEndButtonPressed();
     bool isEndConfirmationReceived();

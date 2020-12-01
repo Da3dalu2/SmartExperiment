@@ -5,6 +5,7 @@ UpdateStatusTask::UpdateStatusTask() {
     this->objectDetected = false;
     this->endButtonPressed = false;
     this->motionDetected = false;
+    this->endConfirmationReceived = false;
     this->oCurrentState = std::make_optional(new ReadyState(*this));
 }
 

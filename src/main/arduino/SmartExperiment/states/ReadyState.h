@@ -4,12 +4,13 @@
 #include "State.h"
 #include "SuspendedState.h"
 #include "RunningState.h"
+#include "ErrorState.h"
 #include "UpdateStatusTask.h"
 
 #define SLEEP_TIME 20
 #define DEBOUNCE_DELAY 50
 
-class ReadyState: public State {
+class ReadyState final: public State {
 
 public:
     ReadyState(UpdateStatusTask& task);

@@ -1,7 +1,7 @@
 #ifndef __LIGHT_H_
 #define __LIGHT_H_
 
-#include "../../SmartExperiment.h"
+#include "SmartExperiment.h"
 
 class Light {
 public:

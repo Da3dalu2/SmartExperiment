@@ -1,4 +1,6 @@
 #include "Scheduler.h"
+#include <avr/sleep.h>
+#include <avr/power.h>
 
 /**
  * Rate-monotonic scheduling. Static. From minor to maior period.
@@ -15,8 +17,8 @@ Scheduler::Scheduler(SchedulerManager* schedMgr) {
 void Scheduler::init(uint16_t basePeriod) {
      this->basePeriod = basePeriod;
      uint32_t period = 1000l * basePeriod;
-     Timer.initialize(period);
-     Timer.attachInterrupt(timerHandler);
+//   Timer.initialize(period);
+//   Timer.attachInterrupt(timerHandler);
 }
 
 bool Scheduler::addTask(Task* task) {
@@ -31,7 +33,7 @@ bool Scheduler::addTask(Task* task) {
 bool Scheduler::rmvTask(Task* task) {
      for (Task* elem : taskList) {
           if( elem == task) {
-               taskList.remove(elem);
+               taskList->remove(elem);
           }
      }
 }

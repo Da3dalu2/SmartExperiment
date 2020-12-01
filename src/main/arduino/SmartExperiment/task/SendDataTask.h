@@ -1,9 +1,8 @@
 #ifndef __SENDDATA_TASK_H_
 #define __SENDDATA_TASK_H_
 
-#include "../Task.h"
-//#include "../SmartExperiment.h"
-#include "../MsgService.h"
+#include "Task.h"
+#include "MsgService.h"
 
 class SendDataTask: public Task {
 

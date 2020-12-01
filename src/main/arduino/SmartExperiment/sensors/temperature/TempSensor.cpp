@@ -1,5 +1,4 @@
 #include "TempSensor.h"
-#include "Arduino.h"
 
 TempSensor::TempSensor(uint8_t pin, float vcc) {
      this->vcc = vcc;

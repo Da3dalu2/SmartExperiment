@@ -5,7 +5,7 @@
 #include "ReadyState.h"
 #include "UpdateStatusTask.h"
 
-class EndingState: public State {
+class EndingState final: public State {
 
 public:
     EndingState(UpdateStatusTask& task);

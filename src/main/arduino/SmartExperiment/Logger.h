@@ -1,7 +1,7 @@
 #ifndef __LOGGER_H_
 #define __LOGGER_H_
 
-#include "string.h"
+#include <string.h>
 
 void log(String msg) {
     Serial.println(msg);
