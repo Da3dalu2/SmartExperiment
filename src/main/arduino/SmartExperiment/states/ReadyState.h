@@ -7,7 +7,6 @@
 #include "ErrorState.h"
 #include "UpdateStatusTask.h"
 
-#define SLEEP_TIME 20
 #define DEBOUNCE_DELAY 50
 
 class ReadyState final: public State {
@@ -15,8 +14,10 @@ class ReadyState final: public State {
 public:
     ReadyState(UpdateStatusTask& task);
     void execute();
+    EnumState getState();
 
 private:
+    const uint8_t sleepTime = 20; // s 
     UpdateStatusTask task;
     uint16_t timeElapsed;
     bool startButtonPressed;

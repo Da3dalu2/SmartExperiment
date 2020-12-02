@@ -1,4 +1,3 @@
 {
-    "board": "arduino:avr:uno",
-    "programmer": "ArduinoISP"
+    "board": "arduino:avr:uno"
 }

@@ -2,7 +2,7 @@
 
 void DetectObjectPresenceTask::tick() {
      if ( this->hasMediator() )
-        taskDirector.notifyObjectDetectedChange(*this, sonar->isObjectDetected());
+        taskDirector->notifyObjectDetectedChange(sonar->isObjectDetected());
     else
-        log("No mediator set for: ", typeid(this).name());
+        log("No mediator set for DetectObjectPresenceTask object");
 }

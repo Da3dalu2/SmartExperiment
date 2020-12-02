@@ -6,6 +6,7 @@
 #include "Subject.h"
 
 class ComputeDataTask: public Task, public Communicator, public Subject {
+
 public:
     ComputeDataTask();  
     void init(uint16_t period);  
@@ -14,14 +15,15 @@ public:
     float getAcceleration();
     float getSpeed();
     float getDistance();
+
 private:
-    float lastDistance;
-    float speed;
-    float lastSpeed;
-    float acceleration;
-    float distance;
-    uint32_t timeElapsed;
-    uint32_t lastTime;
+    float lastDistance;     // m
+    float speed;            // m/s
+    float lastSpeed;        // m/s
+    float acceleration;     // m/s^2 
+    float distance;         // m
+    uint32_t timeElapsed;   // s
+    uint32_t lastTime;      // s
 };
 
 #endif // __COMPUTE_DATA_H_

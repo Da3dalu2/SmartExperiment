@@ -12,7 +12,6 @@ public:
 private:
      uint8_t pin;
      float vcc;
-  
 };
 
 #endif // __TEMP_SENSOR_H_

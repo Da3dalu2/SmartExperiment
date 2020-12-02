@@ -2,12 +2,13 @@
 #define __UPDATE_STATUS_TASK_H_
 
 #include "SmartExperiment.h"
+#include "State.h"
 #include "ReadyState.h"
 #include "Task.h"
 #include "Subject.h"
 #include "TaskDirector.h"
 #include "Communicator.h"
-#include <optional>
+#include "EnumState.h"
 
 class UpdateStatusTask: public Task, public Subject, public Communicator {
 
@@ -25,11 +26,11 @@ public:
     bool isStartButtonPressed();
     bool isEndButtonPressed();
     bool isEndConfirmationReceived();
-    State* getCurrentState();
+    EnumState getCurrentState();
     void updateState(State& nextState);
 
 private:
-    std::optional<State*> oCurrentState;
+    State* currentState;
     bool startButtonPressed;
     bool objectDetected;
     bool endButtonPressed;

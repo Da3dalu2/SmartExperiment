@@ -2,7 +2,7 @@
 
 void DetectEndButtonPressTask::tick() {
     if ( this->hasMediator() )
-        taskDirector.notifyEndButtonPression(*this, button->isPressed());
+        taskDirector->notifyEndButtonPression(button->isPressed());
     else
-        log("No mediator set for: ", typeid(this).name());
+        log("No mediator set for DetectEndButtonPressTask object");
 }

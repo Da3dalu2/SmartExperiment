@@ -6,7 +6,7 @@ UpdateStatusTask::UpdateStatusTask() {
     this->endButtonPressed = false;
     this->motionDetected = false;
     this->endConfirmationReceived = false;
-    this->oCurrentState = std::make_optional(new ReadyState(*this));
+    this->currentState = new ReadyState(*this);
 }
 
 void UpdateStatusTask::init(uint16_t period) {
@@ -14,11 +14,12 @@ void UpdateStatusTask::init(uint16_t period) {
 }
 
 void UpdateStatusTask::tick() {
-    oCurrentState.value()->execute();
+    currentState->execute();
 }
 
 void UpdateStatusTask::updateState(State& nextState) {
-    oCurrentState.emplace(&nextState);
+    delete currentState;
+    currentState = &nextState;
 }
 
 void UpdateStatusTask::setMotionDetected(bool motionDetected) {
@@ -53,6 +54,6 @@ bool UpdateStatusTask::isObjectDetected() {
     return objectDetected;
 }
 
-State* UpdateStatusTask::getCurrentState() {
-    return oCurrentState.value_or(new ReadyState(*this));
+EnumState UpdateStatusTask::getCurrentState() {
+    return currentState->getState();
 }

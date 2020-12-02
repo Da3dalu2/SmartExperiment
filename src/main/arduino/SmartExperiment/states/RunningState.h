@@ -5,8 +5,6 @@
 #include "EndingState.h"
 #include "UpdateStatusTask.h"
 
-#define MAX_TIME 20
-
 class RunningState final: public State {
 
 public:
@@ -14,6 +12,7 @@ public:
     void execute();
 
 private:
+    const uint8_t maxTime = 20; // s
     UpdateStatusTask task;
     uint16_t timeElapsed;
     bool endButtonPressed;

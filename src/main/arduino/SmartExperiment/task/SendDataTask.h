@@ -3,20 +3,23 @@
 
 #include "Task.h"
 #include "MsgService.h"
+#include "Observer.h"
+#include "UpdateStatusTask.h"
 
-class SendDataTask: public Task {
+class SendDataTask: public Task, public Observer {
 
 public:
-    SendDataTask(float distance, float time);
-    void init(uint8_t period);
+    SendDataTask();
+    void init(uint16_t period);
     void tick();
-    void setTime();
-    void setDistance();
+    void update(ComputeDataTask& task);
 
 private:
     String msg;
     float distance;
-    float time;
+    float currentDistance;
+    float currentSpeed;
+    float currentAcceleration;
 };
 
 #endif // __SENDDATA_TASK_H_

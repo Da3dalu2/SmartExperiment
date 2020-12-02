@@ -2,7 +2,6 @@
 #define __COMMUNICATOR_H_
 
 #include "TaskDirector.h"
-#include <typeinfo>
 
 /**
  * Used by tasks that communicate through a mediator.
@@ -12,16 +11,23 @@ class Communicator {
 
 public:
     Communicator() = default;
-    void setMediator(TaskDirector& taskDirector) {
+    void attachMediator(TaskDirector* taskDirector) {
         this->taskDirector = taskDirector;
+        mediatorSet = true;
     };
+    void detachMediator() {
+        this->taskDirector = nullptr;
+        mediatorSet = false;
+    }
     bool hasMediator() {
-        return typeid(taskDirector) == typeid(TaskDirector);
+        return mediatorSet;
     }
 
 protected:
-    TaskDirector taskDirector;
+    TaskDirector* taskDirector;
 
+private:
+    bool mediatorSet = false;
 };
 
 #endif // __COMMUNICATOR_H_

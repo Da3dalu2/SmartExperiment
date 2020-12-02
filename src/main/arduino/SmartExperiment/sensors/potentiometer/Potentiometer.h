@@ -6,7 +6,7 @@
 class Potentiometer {
 
 public:
-    virtual uint16_t getValue();
+    virtual uint16_t getValue() = 0;
 };
 
 #endif // __POTENTIOMETER_H_

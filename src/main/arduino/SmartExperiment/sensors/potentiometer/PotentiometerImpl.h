@@ -11,7 +11,6 @@ public:
 
 private:
      uint8_t pin;
-
 };
 
 #endif // __POTENTIOMETERIMPL_H_

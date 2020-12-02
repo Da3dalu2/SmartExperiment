@@ -9,8 +9,11 @@ public:
     using DetectObjectTask::DetectObjectTask;
     void update(UpdateStatusTask& subject);
     void tick();
+    void updateSamplingFrequency(uint8_t samplingFrequency);
+
 private:
-    State* currentState;
+    uint8_t samplingFrequency = 0;
+    EnumState currentState;
 };
 
 #endif // __DETECT_OBJECT_DISTANCE_TASK_H_

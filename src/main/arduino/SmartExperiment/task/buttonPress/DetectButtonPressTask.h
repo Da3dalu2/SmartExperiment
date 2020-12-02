@@ -12,7 +12,7 @@ public:
         this->buttonPin = buttonPin;
         this->debounceDelay = debounceDelay;
     };
-
+    
     void init(uint16_t period) {
         Task::init(period);
         this->button = new ButtonImpl(buttonPin, debounceDelay);

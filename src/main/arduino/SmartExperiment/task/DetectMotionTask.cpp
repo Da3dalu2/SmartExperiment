@@ -12,7 +12,14 @@ DetectMotionTask::DetectMotionTask(uint8_t pin) {
 void DetectMotionTask::init(uint16_t period) {
     Task::init(period); 
     pir->calibrate();
-    pir->attachInterrupt(onMotionDetected);
+}
+
+void DetectMotionTask::attachInterrupt() {
+    attachInterrupt(digitalPinToInterrupt(pin), onMotionDetected, CHANGE);
+}
+
+void DetectMotionTask::detachInterrupt() {
+    detachInterrupt(digitalPinToInterrupt(pin));
 }
 
 static void onMotionDetected() {
@@ -20,10 +27,11 @@ static void onMotionDetected() {
 }
 
 void DetectMotionTask::tick() {
+    noInterrupts();
     if ( movement ) {
         movement = false;
-        taskDirector.notifyMotionDetectedChange(*this, 
-                                                pir->isMotionDetected());
+        taskDirector->notifyMotionDetectedChange(pir->isMotionDetected());
     }
+    interrupts();
 }
 

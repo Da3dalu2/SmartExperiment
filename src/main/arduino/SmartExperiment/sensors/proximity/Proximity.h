@@ -2,9 +2,8 @@
 #define __PROXIMITY_H_
 
 #include "SmartExperiment.h"
-#include "Interruptible.h"
 
-class Proximity: public Interruptible {
+class Proximity {
 
 public:
     virtual bool isMotionDetected() = 0;

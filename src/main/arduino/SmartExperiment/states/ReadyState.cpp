@@ -14,9 +14,9 @@ void ReadyState::execute() {
     objectDetected = task.isObjectDetected();
     startButtonPressed = task.isStartButtonPressed();
 
-    if ( !startButtonPressed && timeElapsed > SLEEP_TIME ) {
+    if ( !startButtonPressed && timeElapsed > sleepTime ) {
         task.updateState(*new SuspendedState(task));
-    }  else if ( !startButtonPressed && timeElapsed <= SLEEP_TIME ) {
+    }  else if ( !startButtonPressed && timeElapsed <= sleepTime ) {
         timeElapsed++;
     }  else if ( startButtonPressed && objectDetected ) {  
         task.updateState(*new RunningState(task));
@@ -24,4 +24,8 @@ void ReadyState::execute() {
         task.updateState(*new ErrorState(task, 
             "no objects detected, the experiment cannot begin"));
     }
+}
+
+EnumState ReadyState::getState() {
+    return EnumState::Ready;
 }

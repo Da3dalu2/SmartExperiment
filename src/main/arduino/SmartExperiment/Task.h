@@ -2,9 +2,8 @@
 #define __TASK_H_
 
 #include "SmartExperiment.h"
-#include "Activable.h"
 
-class Task : public Activable {
+class Task {
   
 public:
      virtual void init(uint16_t period){
@@ -24,8 +23,8 @@ public:
      }
 
 private:
-     uint16_t myPeriod;
-     uint16_t timeElapsed;
+     uint16_t myPeriod;  // ms
+     uint16_t timeElapsed;    // ms
 };
 
 #endif  // __TASK_H_

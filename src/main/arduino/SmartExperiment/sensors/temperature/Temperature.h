@@ -7,7 +7,6 @@ class Temperature {
 
 public:
     virtual float getTemperature() = 0;
-
 };
 
 #endif // __TEMPERATURE_H_

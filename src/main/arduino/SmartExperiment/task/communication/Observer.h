@@ -7,7 +7,6 @@ class Observer {
 
 public:
     virtual void update(Subject& subject) = 0;
-        
 };
 
 #endif // __OBSERVER_H_

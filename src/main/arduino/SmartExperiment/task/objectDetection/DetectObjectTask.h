@@ -22,8 +22,10 @@ public:
         this->tempPin = tempPin;
         this->temperatureCelsius = 0;
         this->distance = 0.0;
+        this->period = 0;
     }
     void init(uint16_t period) {
+        this->period = period;
         Task::init(period);
         this->tempSensor = new TempSensor(tempPin, VOLTAGE);
         temperatureCelsius = tempSensor->getTemperature();
@@ -37,6 +39,7 @@ public:
     
 protected:
     Sonar* sonar;
+    uint16_t period;
 
 private:
     uint8_t echoPin;

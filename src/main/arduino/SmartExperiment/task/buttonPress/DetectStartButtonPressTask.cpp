@@ -2,7 +2,7 @@
 
 void DetectStartButtonPressTask::tick() {
     if ( this->hasMediator() )
-        taskDirector.notifyStartButtonPression(*this, button->isPressed());
+        taskDirector->notifyStartButtonPression(button->isPressed());
     else
-        log("No mediator set for: ", typeid(this).name());
+        log("No mediator set for DetectStartButtonPressTask object");
 }

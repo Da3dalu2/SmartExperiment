@@ -11,7 +11,9 @@ public:
     DetectMotionTask(uint8_t pin);
     void init(uint16_t period);
     void tick();
- 
+    void attachInterrupt();
+    void detachInterrupt();
+
 private:
     Pir* pir;
     uint8_t pin;

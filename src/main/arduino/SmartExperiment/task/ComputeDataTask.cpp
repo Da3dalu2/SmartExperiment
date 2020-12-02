@@ -14,7 +14,6 @@ void ComputeDataTask::init(uint16_t period) {
     Task::init(period);
 }
 
-// REVIEW: possibly unchecked conversion float-unsigned long
 void ComputeDataTask::tick() {
     speed = ( distance - lastDistance ) / ( timeElapsed - lastTime );
     acceleration = ( speed - lastSpeed ) / ( timeElapsed - lastTime );

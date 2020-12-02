@@ -10,9 +10,9 @@ RunningState::RunningState(UpdateStatusTask& task) {
 }
 
 void RunningState::execute() {
-    if ( endButtonPressed || timeElapsed > MAX_TIME ) {
+    if ( endButtonPressed || timeElapsed > maxTime ) {
         task.updateState(*new EndingState(task));
-    } else if ( !endButtonPressed && timeElapsed <= MAX_TIME ) {
+    } else if ( !endButtonPressed && timeElapsed <= maxTime ) {
         timeElapsed++;
     }
 }

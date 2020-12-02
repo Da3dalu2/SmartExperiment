@@ -36,7 +36,7 @@ public:
   bool isMsgAvailable(Pattern& pattern);
   Msg* receiveMsg(Pattern& pattern);
   
-  void sendMsg(const String& msg);
+  void sendMsg(String msg);
 };
 
 extern MsgServiceClass MsgService;

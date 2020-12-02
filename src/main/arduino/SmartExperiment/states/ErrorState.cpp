@@ -1,6 +1,6 @@
 #include "ErrorState.h"
 
-ErrorState::ErrorState(UpdateStatusTask& task, String errorDescription) {
+ErrorState::ErrorState(UpdateStatusTask& task, const char* errorDescription) {
     this->task = task;
     this->errorDescription = errorDescription;
     this->timeElapsed = 0;

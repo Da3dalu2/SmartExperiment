@@ -1,20 +1,22 @@
 #ifndef __SUBJECT_H_
 #define __SUBJECT_H_
 
-#include <iostream>
-#include <vector>
+#include <LinkedList.h>
 #include "Observer.h"
 
 class Subject {
 
 public:
-    virtual ~Subject() = default;
+    virtual Subject() = default;
     void attachObserver(Observer& ob) {
-        observers.push_back(&ob);
+        observers.add(&ob);
     }
 
     void detachObserver(Observer& ob) {
-        observers.erase(std::remove(observers.begin(), observers.end(), &ob));
+        for (uint8_t i = 0; i < observers.size(); i++) {
+            if ( observers[i] == ob )
+                observers.remove(i);  
+        }
     }
 
     void notifyObservers() {
@@ -23,8 +25,7 @@ public:
     }
 
 private:
-    std::vector<Observer*> observers;
-
+    LinkedList<Observer*> observers;
 };
 
 #endif // __SUBJECT_H_

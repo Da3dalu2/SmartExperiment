@@ -1,25 +1,33 @@
 #include "SendDataTask.h"
 
-SendDataTask::SendDataTask(float distance, float time) {
-    this->distance = distance;
-    this->time = time;
+SendDataTask::SendDataTask() {
+    this->distance = 0.0;
+    this->currentDistance = 0.0;
+    this->currentSpeed = 0.0;
+    this->currentAcceleration = 0.0;
     this->msg = "";
 }
 
-void SendDataTask::init(uint8_t period) {
+void SendDataTask::init(uint16_t period) {
     Task::init(period);
     MsgService.init();
 }
 
 void SendDataTask::tick() {
-    msg = distance + " " + time + "\n"
-    MsgService.sendMsg(msg);
+    if (currentDistance != distance) {
+        msg.concat(currentDistance);
+        msg.concat(" ");
+        msg.concat(currentSpeed);
+        msg.concat(" ");
+        msg.concat(currentAcceleration);
+        msg.concat("\n");
+        MsgService.sendMsg(msg);
+    }
 }
 
-void SendDataTask::setTime(float time) {
-    this->time = time;
-}
-
-void SendDataTask::setDistance(float distance) {
-    this->distance = distance;
+void SendDataTask::update(ComputeDataTask& task) {
+    currentDistance = distance;
+    distance = task.getDistance();
+    currentSpeed = task.getSpeed();
+    currentAcceleration = task.getAcceleration();
 }
