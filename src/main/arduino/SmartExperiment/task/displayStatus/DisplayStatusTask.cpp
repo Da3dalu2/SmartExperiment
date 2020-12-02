@@ -1,5 +1,10 @@
 #include "DisplayStatusTask.h"
 
+/**
+ * Through composition this task is responsible of showing to the user the
+ * status of the system both from the microcontroller and from the the 
+ * Viewer application.
+ */ 
 DisplayStatusTask::DisplayStatusTask(   MicrocontrollerStatus* microStatus, 
                                         ViewerStatus* viewerStatus) {
     this->microStatus = microStatus;

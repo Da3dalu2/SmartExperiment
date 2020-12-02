@@ -5,20 +5,17 @@
 #include "SuspendedState.h"
 #include "UpdateStatusTask.h"
 #include "Logger.h"
-#include "BlinkLed.h"
 
 class ErrorState final: public State {
 
 public:
-    ErrorState(UpdateStatusTask& task, const char* errorDescription);
+    ErrorState(UpdateStatusTask& task, String errorDescription);
     void execute();
 
 private:
     const uint16_t errorTime = 2; // s
-    const uint8_t errorLedPin = 2;
     uint16_t timeElapsed;
-    const char errorDescription;
-    BlinkTask* errorLedBlinking;
+    String errorDescription;
     UpdateStatusTask task;
 };
 

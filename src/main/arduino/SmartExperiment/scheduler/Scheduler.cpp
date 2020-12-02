@@ -1,50 +1,45 @@
 #include "Scheduler.h"
-#include <avr/sleep.h>
-#include <avr/power.h>
 
-/**
- * Rate-monotonic scheduling. Static. From minor to maior period.
- * List of tasks. Present are active, absent are inactive.
- * Looped by the scheduler.
- */ 
 void timerHandler(void){}
 
 Scheduler::Scheduler(SchedulerManager* schedMgr) {
      this->schedMgr = schedMgr;
-     this->nTasks = 0;
 }
 
 void Scheduler::init(uint16_t basePeriod) {
      this->basePeriod = basePeriod;
      uint32_t period = 1000l * basePeriod;
-//   Timer.initialize(period);
-//   Timer.attachInterrupt(timerHandler);
+     this->timer = new Timer();
+     timer->setupPeriod(period);
+     timer->attachInterrupt(timerHandler);
 }
 
 bool Scheduler::addTask(Task* task) {
-     if (nTasks < MAX_TASKS - 1){
-          taskList[nTasks] = task;
-          nTasks++;
+     if (taskList.size() < maxTasks - 1){
+          taskList.add(task);
           return true;
      } else
           return false; 
 }
 
 bool Scheduler::rmvTask(Task* task) {
-     for (Task* elem : taskList) {
-          if( elem == task) {
-               taskList->remove(elem);
+     for (uint8_t i = 0; i < taskList.size(); i++) {
+          if( taskList.get(i) == task) {
+               taskList.remove(i);
+               return true;
           }
      }
+     return false;
 }
 
 void Scheduler::schedule() {   
      sleep();
+#ifdef DEBUG
      Serial.println("AWAKE");
-
-     for (Task* task : taskList){
-          if ( task->updateAndCheckTime(basePeriod) )
-               task->tick();
+#endif
+     for (uint8_t i = 0; i < taskList.size(); i++){
+          if ( taskList.get(i)->updateAndCheckTime(basePeriod) )
+               taskList.get(i)->tick();
      }
 
      schedMgr->checkScheduling();
@@ -67,6 +62,6 @@ void Scheduler::sleep() {
      power_all_enable();  
 }
 
-Task* Scheduler::getTaskList() {
-     return *taskList;
+LinkedList<Task*> Scheduler::getTaskList() {
+     return taskList;
 }

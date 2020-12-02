@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "MsgService.h"
 
-const char* content;
+String content;
 
 MsgServiceClass MsgService;
 
@@ -29,12 +29,11 @@ void MsgServiceClass::init(){
   msgAvailable = false;  
 }
 
-void MsgServiceClass::sendMsg(const const char* msg){
+void MsgServiceClass::sendMsg(const String msg){
   Serial.println(msg);  
 }
 
 void serialEvent() {
-  /* reading the content */
   while (Serial.available()) {
     char ch = (char) Serial.read();
     if (ch == '\n'){

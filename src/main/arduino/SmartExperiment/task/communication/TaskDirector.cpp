@@ -82,3 +82,7 @@ void TaskDirector::notifySamplingFrequencyChange(uint8_t samplingFrequency) {
     checkDetectObjectDistanceTaskRegistration();
     detectObjectDistanceTask->updateSamplingFrequency(samplingFrequency);
 }
+
+void TaskDirector::notifyEndConfirmationReceived(bool endConfirmationReceived) {
+    updateStatusTask->setEndConfirmationReceived(endConfirmationReceived);
+}

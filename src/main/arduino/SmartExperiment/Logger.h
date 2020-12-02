@@ -1,16 +1,16 @@
 #ifndef __LOGGER_H_
 #define __LOGGER_H_
 
-void log(const char* msg) {
+void log(String msg) {
     Serial.println(msg);
 };
 
-void log(const char* msg, uint16_t value) {
+void log(String msg, uint16_t value) {
     Serial.println(msg);
     Serial.print(value);
 }
 
-void log(const char* msg, const char* param) {
+void log(String msg, String param) {
     Serial.println(msg);
     Serial.print(param);
 }

@@ -1,10 +1,8 @@
 #include "Scheduler.h"
 #include "SchedulerManager.h"
-#include <list>
 
 Scheduler* scheduler;
 SchedulerManager* schedulerManager;
-std::list<Task> taskList;
 
 void setup() {
     Serial.begin(9600);

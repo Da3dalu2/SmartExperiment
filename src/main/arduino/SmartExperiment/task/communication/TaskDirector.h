@@ -28,6 +28,7 @@ public:
     void notifyEndButtonPression(bool endButtonPressed);
     void notifyObjectDistanceChange(float distance, uint32_t time);
     void notifySamplingFrequencyChange(uint8_t samplingFrequency);
+    void notifyEndConfirmationReceived(bool endConfirmationReceived)
 
 private:
     void checkUpdateStatusTaskRegistration();

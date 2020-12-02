@@ -3,13 +3,19 @@
 
 #include "MsgService.h"
 #include "State.h"
+#include "Communicator.h"
 
-class ViewerStatus {
+class ViewerStatus: public Communicator {
 
 public:
     ViewerStatus();
     void init();
     void displayStatusOnViewer(EnumState currentState);
+
+private:
+    TaskDirector* taskDirector;
+    String msg;
+    bool endConfirmationReceived;
 };
 
 #endif // __VIEWER_STATUS_H_

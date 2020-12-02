@@ -4,8 +4,9 @@
 #include "Task.h"
 #include "SchedulerManager.h"
 #include "Timer.h"
-
-#define MAX_TASKS 50
+#include <LinkedList.h>
+#include <avr/sleep.h>
+#include <avr/power.h>
 
 class Scheduler {
   
@@ -15,14 +16,15 @@ public:
      bool addTask(Task* task);
      bool rmvTask(Task* task);
      void schedule();
-     Task* getTaskList();
+     LinkedList<Task*> getTaskList();
 
 private:
      void sleep();
+     const uint8_t maxTasks = 50;
      uint8_t basePeriod;
-     uint8_t nTasks;
+     Timer* timer;
      SchedulerManager* schedMgr;
-     Task* taskList[MAX_TASKS];
+     LinkedList<Task*> taskList;
 };
 
 #endif  // __SCHEDULER_H_
