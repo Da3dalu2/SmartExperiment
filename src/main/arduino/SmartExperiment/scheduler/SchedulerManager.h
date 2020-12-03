@@ -4,7 +4,10 @@
 #include "Observer.h"
 #include "EnumState.h"
 #include "UpdateStatusTask.h"
+#include "DisplaySpeedTask.h"
+#include "DisplayStatusTask.h"
 #include "Scheduler.h"
+#include <LinkedList.h>
 
 /**
  * Observers updateStatusTask. Updates scheduler's taskList.
@@ -17,6 +20,9 @@ public:
     void update(UpdateStatusTask& task);
 
 private:
+    LinkedList<Task*> readyStateTaskList;
+    LinkedList<Task*> runningStateTaskList;
+    LinkedList<Task*> suspendedStateTask;
     Scheduler* sched;
     EnumState currentState;
 };
