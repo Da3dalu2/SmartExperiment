@@ -6,7 +6,7 @@
 class Sonar {
 
 public:
-    virtual float computeDistance() = 0;
+    virtual float getDistance() = 0;
     virtual void calibrate(float updateTemperatureCelsius) = 0;
     virtual bool isObjectDetected() = 0;
 };

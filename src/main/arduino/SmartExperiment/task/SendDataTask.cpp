@@ -2,6 +2,7 @@
 
 SendDataTask::SendDataTask() {
     this->distance = 0.0;
+    this->currentTime = 0;
     this->currentDistance = 0.0;
     this->currentSpeed = 0.0;
     this->currentAcceleration = 0.0;
@@ -20,6 +21,8 @@ void SendDataTask::tick() {
         msg.concat(currentSpeed);
         msg.concat(" ");
         msg.concat(currentAcceleration);
+        msg.concat(" ");
+        msg.concat(currentTime);
         msg.concat("\n");
         MsgService.sendMsg(msg);
     }
@@ -30,4 +33,5 @@ void SendDataTask::update(ComputeDataTask& task) {
     distance = task.getDistance();
     currentSpeed = task.getSpeed();
     currentAcceleration = task.getAcceleration();
+    currentTime = task.getTime();
 }

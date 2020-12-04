@@ -29,6 +29,10 @@ void ComputeDataTask::updateDistance(float newDistance, uint32_t newTime) {
     speed = 0.0;
 }
 
+uint32_t ComputeDataTask::getTime() {
+    return timeElapsed;
+}
+
 float ComputeDataTask::getDistance() {
     return distance;
 }

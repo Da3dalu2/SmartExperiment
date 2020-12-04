@@ -1,4 +1,4 @@
-package seiot.modulo_lab_2_2.msg;
+package controller;
 
 /**
  * Testing simple message passing.

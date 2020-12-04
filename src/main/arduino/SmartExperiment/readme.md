@@ -30,6 +30,10 @@ Always: UpdateStatus and DisplayStatus
 + SendData
 + DisplaySpeed
 
+## Error
+
+No additional tasks required
+
 ## Ending
 
 No additional tasks required
@@ -48,3 +52,10 @@ https://www.jfree.org/jfreechart/javadoc/org/jfree/data/time/DynamicTimeSeriesCo
 https://github.com/jfree/jfree-fxdemos/blob/master/src/main/java/org/jfree/chart/fx/demo/TimeSeriesChartFXDemo1.java | jfree-fxdemos/TimeSeriesChartFXDemo1.java at master · jfree/jfree-fxdemos
 https://www.tutorialspoint.com/jfreechart/jfreechart_timeseries_chart.htm | JFreeChart - TimeSeries Chart - Tutorialspoint
 https://duckduckgo.com/?t=ffab&q=curriculum+vitae+et+studiorum&ia=web | curriculum vitae et studiorum at DuckDuckGo
+
+## Scelte di implementazione discutibili
+
+L'ereditarietà non dovrebbe essere impiegata per il riuso di codice, si dovrebbe 
+preferire la composizione.
+
+https://isocpp.org/wiki/faq/objective-c#objective-c-and-inherit

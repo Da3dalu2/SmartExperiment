@@ -21,6 +21,6 @@ void SetSamplingFrequencyTask::tick() {
      }
 }
 
-void SetSamplingFrequencyTask::update(UpdateStatusTask& task) {
-     currentState = task.getCurrentState();
+void SetSamplingFrequencyTask::update(UpdateStatusTask* task) {
+     currentState = task->getCurrentState();
 }

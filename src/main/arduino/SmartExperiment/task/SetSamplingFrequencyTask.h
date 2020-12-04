@@ -8,13 +8,14 @@
 #include "State.h"
 #include "PotentiometerImpl.h"
 
-class SetSamplingFrequencyTask: public Task, public Observer, public Communicator {
+class SetSamplingFrequencyTask: public Task, public Observer,
+    public Communicator {
 
 public:
     SetSamplingFrequencyTask(uint8_t pin);  
     void init(uint16_t period);  
     void tick();
-    void update(UpdateStatusTask& task);
+    void update(UpdateStatusTask* task);
 
 private:
     const uint8_t minFreq = 10; // Hz
@@ -28,4 +29,3 @@ private:
 };
 
 #endif // __SAMPLINGFREQUENCY_TASK_H_
-

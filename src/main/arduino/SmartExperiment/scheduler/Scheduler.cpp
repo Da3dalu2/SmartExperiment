@@ -9,9 +9,8 @@ Scheduler::Scheduler(SchedulerManager* schedMgr) {
 void Scheduler::init(uint16_t basePeriod) {
      this->basePeriod = basePeriod;
      uint32_t period = 1000l * basePeriod;
-     this->timer = new Timer();
-     timer->setupPeriod(period);
-     timer->attachInterrupt(timerHandler);
+     Timer.setupPeriod(period);
+     Timer.attachInterrupt(timerHandler);
 }
 
 bool Scheduler::addTask(Task* task) {
@@ -22,6 +21,14 @@ bool Scheduler::addTask(Task* task) {
           return false; 
 }
 
+bool Scheduler:: addTaskList(LinkedList<Task*> taskList) {
+    bool op_succeded = true;
+    for (uint8_t i = 0; i < taskList.size(); i++) {
+        op_succeded = op_succeded && addTask(taskList.get(i));
+    }
+    return op_succeded;
+}
+
 bool Scheduler::rmvTask(Task* task) {
      for (uint8_t i = 0; i < taskList.size(); i++) {
           if( taskList.get(i) == task) {
@@ -30,6 +37,10 @@ bool Scheduler::rmvTask(Task* task) {
           }
      }
      return false;
+}
+
+void Scheduler::clearTaskList() {
+     taskList.clear();
 }
 
 void Scheduler::schedule() {   

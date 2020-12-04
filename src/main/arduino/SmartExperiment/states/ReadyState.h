@@ -7,8 +7,6 @@
 #include "ErrorState.h"
 #include "UpdateStatusTask.h"
 
-#define DEBOUNCE_DELAY 50
-
 class ReadyState final: public State {
 
 public:

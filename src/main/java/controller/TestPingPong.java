@@ -1,19 +1,21 @@
-package seiot.modulo_lab_2_2.msg;
+package controller;
 
 /**
  * Testing simple message passing.
  * 
  * To be used with an Arduino connected via Serial Port
- * running modulo-2.3/remote_blinking.ino
+ * running modulo-lab-2.2/pingpong.ino
  * 
  * @author aricci
  *
  */
-public class TestRemoteBlinking {
+public class TestPingPong {
 
 	public static void main(String[] args) throws Exception {
-		SerialCommChannel channel = new SerialCommChannel(args[0],9600);		
-		// SerialCommChannel channel = new SerialCommChannel("/dev/cu.usbmodem1411",9600);		
+		CommChannel channel = new SerialCommChannel(args[0],9600);	
+		// CommChannel channel = new SerialCommChannel("/dev/cu.usbmodem1411",9600);	
+		// CommChannel channel = new SerialCommChannel("/dev/cu.isi00-DevB",9600);	
+		
 		/* attesa necessaria per fare in modo che Arduino completi il reboot */
 		System.out.println("Waiting Arduino for rebooting...");		
 		Thread.sleep(4000);
@@ -21,16 +23,11 @@ public class TestRemoteBlinking {
 
 		
 		while (true){
-			channel.sendMsg("1");
+			System.out.println("Sending ping");
+			channel.sendMsg("ping");
 			String msg = channel.receiveMsg();
-			System.out.println(msg);		
+			System.out.println("Received: "+msg);		
 			Thread.sleep(500);
-		
-			channel.sendMsg("0");
-			msg = channel.receiveMsg();
-			System.out.println(msg);
-			Thread.sleep(500);
-
 		}
 	}
 

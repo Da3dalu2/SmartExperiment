@@ -6,8 +6,6 @@
 #include "Communicator.h"
 #include "TempSensor.h"
 
-#define VOLTAGE 5.0
-
 /**
  * Should a deallocator method be called?
  */ 
@@ -27,7 +25,7 @@ public:
     void init(uint16_t period) {
         this->period = period;
         Task::init(period);
-        this->tempSensor = new TempSensor(tempPin, VOLTAGE);
+        this->tempSensor = new TempSensor(tempPin, voltage);
         temperatureCelsius = tempSensor->getTemperature();
         this->sonar = new SonarImpl(trigPin, echoPin, temperatureCelsius);
     };
@@ -42,6 +40,7 @@ protected:
     uint16_t period;
 
 private:
+    const uint8_t voltage = 5;
     uint8_t echoPin;
     uint8_t trigPin;
     uint8_t tempPin;

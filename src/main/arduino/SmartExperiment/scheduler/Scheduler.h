@@ -15,6 +15,8 @@ public:
      void init(uint16_t basePeriod);  
      bool addTask(Task* task);
      bool rmvTask(Task* task);
+     bool addTaskList(LinkedList<Task*> taskList);
+     void clearTaskList();
      void schedule();
      LinkedList<Task*> getTaskList();
 

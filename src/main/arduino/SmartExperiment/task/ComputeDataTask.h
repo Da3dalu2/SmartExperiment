@@ -15,6 +15,7 @@ public:
     float getAcceleration();
     float getSpeed();
     float getDistance();
+    uint32_t getTime(); 
 
 private:
     float lastDistance;     // m

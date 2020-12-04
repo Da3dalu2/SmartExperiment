@@ -1,20 +1,20 @@
 #ifndef __TIMER_H_
 #define __TIMER_H_
 
-class Timer {
+class TimerClass {
 
-public:  
-     static Timer *getInstance();
+public:
      void setupFreq(uint32_t freq);     // Hz
      void setupPeriod(uint32_t period); // ms
      void attachInterrupt(void(*isr)(void));
      void detachInterrupt();
 
 private:
+     TimerClass();
      void (*getCallback(void))(void);
-     static Timer *SINGLETON;
-     Timer();
      void (*_isrCallback)(void);
 };
+
+extern TimerClass Timer;
 
 #endif  // __TIMER_H_

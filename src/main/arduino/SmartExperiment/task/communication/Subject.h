@@ -8,13 +8,13 @@ class Subject {
 
 public:
     Subject() = default;
-    void attachObserver(Observer& ob) {
-        observers.add(&ob);
+    void attachObserver(Observer* ob) {
+        observers.add(ob);
     }
 
-    void detachObserver(Observer& ob) {
+    void detachObserver(Observer* ob) {
         for (uint8_t i = 0; i < observers.size(); i++) {
-            if ( observers.get(i) == &ob )
+            if ( observers.get(i) == ob )
                 observers.remove(i);  
         }
     }

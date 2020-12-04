@@ -1,18 +1,12 @@
 #include "Timer.h"
 
-Timer *Timer::SINGLETON {};
-
-Timer::Timer(){
+TimerClass::TimerClass() {
     this->_isrCallback = emptyCallback;
-}
-
-Timer *Timer::getInstance() {
-    return SINGLETON;
 }
 
 void emptyCallback(void) {}
 
-void Timer::setupFreq(uint32_t freq){
+void TimerClass::setupFreq(uint32_t freq) {
   cli();
 
   TCCR1A = 0; // set entire TCCR1A register to 0
@@ -34,7 +28,7 @@ void Timer::setupFreq(uint32_t freq){
   sei();
 }
 
-void Timer::setupPeriod(uint32_t period){
+void TimerClass::setupPeriod(uint32_t period) {
   cli();
   TCCR1A = 0; // set entire TCCR1A register to 0
   TCCR1B = 0; // same for TCCR1B
@@ -55,20 +49,20 @@ void Timer::setupPeriod(uint32_t period){
   sei();
 }
 
-void Timer::attachInterrupt(void(*isr)(void)) {
+void TimerClass::attachInterrupt(void(*isr)(void)) {
     this->_isrCallback = isr; // Setting the function to be called on the interrupt capture
     TIMSK1 |= _BV(OCIE1A);    // Enabling interrupts capture
 }
 
-void Timer::detachInterrupt() {
+void TimerClass::detachInterrupt() {
     TIMSK1 = 0;                         // Disabling interrupts capture
     this->_isrCallback = emptyCallback; // Resetting function called on interrupt to an empty one
 }
 
-void (*Timer::getCallback(void))(void) {
+void (*TimerClass::getCallback(void))(void) {
     return this->_isrCallback;
 }
 
-ISR(TIMER1_COMPA_vect){
-  (Timer.getCallback())();
+ISR(TIMER1_COMPA_vect) {
+  (TimerClass.getCallback())();
 }

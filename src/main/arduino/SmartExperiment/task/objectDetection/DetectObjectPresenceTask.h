@@ -6,7 +6,7 @@
 class DetectObjectPresenceTask: public DetectObjectTask {
 
 public:
-    using DetectObjectPresenceTask::DetectObjectPresenceTask;
+    using DetectObjectTask::DetectObjectTask;
     void tick();
 };
 

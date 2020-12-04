@@ -1,13 +1,10 @@
-package seiot.modulo_lab_2_2.msg;
+package controller;
 
 import java.util.concurrent.*;
 import jssc.*;
 
 /**
  * Comm channel implementation based on serial port.
- * 
- * @author aricci
- *
  */
 public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 
@@ -51,13 +48,11 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 
 	@Override
 	public String receiveMsg() throws InterruptedException {
-		// TODO Auto-generated method stub
 		return queue.take();
 	}
 
 	@Override
 	public boolean isMsgAvailable() {
-		// TODO Auto-generated method stub
 		return !queue.isEmpty();
 	}
 
@@ -75,7 +70,6 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 			ex.printStackTrace();
 		}
 	}
-
 
 	public void serialEvent(SerialPortEvent event) {
 		/* if there are bytes received in the input buffer */

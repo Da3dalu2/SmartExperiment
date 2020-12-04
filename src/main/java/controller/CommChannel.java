@@ -1,9 +1,7 @@
-package seiot.modulo_lab_2_2.msg;
+package controller;
 
 /**
- * Simple interface for an async msg communication channel
- * @author aricci
- *
+ * Simple interface for an async msg communication channel.
  */
 public interface CommChannel {
 	

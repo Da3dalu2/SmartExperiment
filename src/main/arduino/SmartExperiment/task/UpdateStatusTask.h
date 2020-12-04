@@ -39,4 +39,3 @@ private:
 };
 
 #endif // __UPDATE_STATUS_TASK_H_
-

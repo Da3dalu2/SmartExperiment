@@ -1,0 +1,343 @@
+#+TITLE: State diagrams
+#+STARTUP: imagepreview
+
+* Listati
+
+#+begin_src plantuml :file ./idleState.png
+hide empty description
+state "Idle State" as idleState {
+    [*] --> MotionNotDetected
+    Idle --> MotionDetected
+    MotionDetected --> MotionNotDetected
+    MotionNotDetected --> Idle
+}
+#+end_src
+
+#+RESULTS:
+[[file:./idleState.png]]
+
+#+begin_src plantuml :file ./runningState.png
+hide empty description
+state "Running Experiment State" as runningState {
+   [*] --> GatheringData
+   GatheringData --> GatheringData : running
+   GatheringData --> Idle : buttonPressed ||\n cnt < TIME_EXP
+   Idle --> GatheringData : !running
+}
+#+end_src
+
+#+RESULTS:
+[[file:./runningState.png]]
+
+#+begin_src plantuml :file ./runningState.png
+hide empty description
+state "Running Experiment State" as runningState {
+   [*] --> GatheringData
+   GatheringData --> GatheringData : running
+   GatheringData --> Idle : v1
+   Idle --> GatheringData : !running
+}
+#+end_src
+
+#+RESULTS:
+
+* Legenda
+
+- C1: waitingForData
+- C2: sendingData
+- L1: ledBlinking
+- L2: ledNotBlinking
+- S1: gatheringData
+- Idle: powersaveMode
+
+- a: running
+- b: buttonPressed || cnt < TIME_EXP
+- c: distance != oldDistance
+
+- READY: il sistema è pronto per eseguire un esperimento
+- IDLE: il sistema è in modalità di risparmio energetico
+- RUNNING: il sistema sta eseguendo un esperimento
+
+Sia nello stato IDLE che RUNNING il sistema è considerato in sospeso.
+
+* DetectMotion :ready:
+* SetFrequency :ready:
+* UpdateStatus :ready:
+
+#+Name: updateStatus
+#+begin_src dot :file ./updateStatus.png
+digraph G {
+    node [shape = doublecircle]; A1;
+    node [shape = point ]; qi4;
+    node [shape = circle];
+    rankdir = LR
+    qi4 -> A1
+    subgraph cluster_0 {
+        label = UpdateStatus
+        A1 -> A2 [label = "!a"]
+        A1 -> A4 [label="a"]
+        A2 -> A3 [label = "!c"]
+        A3 -> A1 [label = "e"]
+        A4 -> A1 [label = "b"]
+    }
+}
+#+end_src
+#+RESULTS: updateStatus
+[[file:./updateStatus.png]]
+
+Questo task dipende da detectMotion, blinkLed e setFrequency, oltre che da gatherData e statusMonitor.
+
+Permette di determinare se il sistema è in stato =READY=, =RUNNING=, =ENDING= o =SUSPENDED=.
+
+** Dubbi
+*Domanda*
+
+È possibile evitare che il task richieda esplicitamente di entrare in modalità di risparmio energetico? Magari lo scheduler se si rende conto che i task sono disattivi, assenti o girano a vuoto va in risparmio energetico autonomamente, sempre dopo aver dato occasione di mostrare i cambiamenti di stato e gli errori al viewer.
+
+*Possibile soluzione*
+
+Quando il task attua un cambiamento di stato lo fa attraverso DisplayStatus.
+Quando notifica la presenza di un errore lo fa attraverso DisplayError.
+
+Display{Status, Error} rappresentano unità di lavoro che richiedono di essere eseguite in un altro slot dello scheduler. Il task non richiede mai di andare in risparmio energetico esplicitamente ma piuttosto notifica quale dovrebbe essere il nuovo stato del sistema o se ci sono errori da notificare.
+
+** Schieramento a scaglioni
+
+- detectMotion solo se si entra in Idle e rimossa quando Idle -> A1.
+- setFrequency si rimuove quando A2 -> A3 e si inserisce quando A3 -> A1.
+- gatherData solo se si entra in A2 e rimossa quando
+- statusMonitor sempre presente.
+- blinkled sempre presente (con varianti diverse).
+
+** Anatomia
+
+A1: B_{start} è abilitato e lo stato è =READY=.
+
+A1 -> Idle: se dopo =SLEEP_TIME= secondi non si esegue alcun esperimento si richiede che il sistema vada in modalità di risparmio energetico con risveglio da movimento.
+
+A1 -> A2: se B_{start} è premuto entro il tempo limite si verifica se è presente un oggetto.
+
+A2: nessun cambiamento
+
+A2 -> Idle: se non sono presenti oggetti da rilevare si richiede che il sistema vada in modalità di risparmio energetico con risveglio da movimento /dopo/ aver comunicato che si è verificato un errore.
+
+A2 -> A3: se sono presenti oggetti da rilevare l'esperimento inizia.
+
+A3: B_{start} è disabilitato e B_{end} è abilitato. Lo stato è =RUNNING=.
+
+A3 -> A4: se B_{end} è premuto o è trascorso un tempo pari a =TIME_MAX= l'esperimento termina e si va allo stato =ENDING=.
+
+A4 -> A1: dopo aver notificato il viewer e ricevuto la conferma dall'utente  (mentre il led L2 lampeggia) si può tornare allo stato iniziale.
+
+** Legenda
+
+A1: stato iniziale
+A2: stato iniziale con pressione di B_{start}
+A3: stato running
+A4: risparmio energetico
+
+a: ( !startButtonPressed && cnt > SLEEP_TIME ) || !objectDetected
+b: motionDetected
+d: endButtonPressed || cnt > MAX_TIME
+e: shouldEnd
+
+* DisplayStatus :always:
+
+Intercetta i cambiamenti di stato e notifica il Viewer.
+
+** altro
+Un singolo task non ha una visione globale dello stato del sistema.
+Un task (non necessariamente) sempre attivo, ricevuta una configurazione dichiarativa che attesta ciò che deve controllare, può verificare se uno o più task sono attivi o meno, capire qual'è lo stato del sistema e comunicare i cambiamenti al viewer.
+
+Questo task ha la responsabilità di far andare in modalità di risparmio energetico il sistema.
+
+BeginExperiment comunica se andare in risparmio energetico o schedulare i task per il running e per l'endExperiment.
+
+StatusMonitor elimina BeginExperiment una volta che l'esperimento è iniziato e lo reinserisce dopo aver terminato i task di running e l'EndExperiment.
+
+In linea di principio l'orchestratore non dovrebbe conoscere tutti i task del sistema e avere la responsabilità di terminare ognuno di essi.
+
+* DisplayError :always:
+
+Intercetta richieste di segnalazione di errori e a seconda delle istruzioni accende led, invia dati in stdout e notifica al viewer lo stato di errore.
+
+* BlinkLed :ready:running:
+
+#+Name: blinkLed
+#+begin_src dot :file ./led.png
+digraph G {
+    node [shape = doublecircle]; L1;
+    node [shape = point ]; qi2;
+    node [shape = circle];
+    rankdir = LR
+    qi2 -> L1
+    subgraph cluster_1 {
+        label = Led
+        L1 -> L1 [label = "a"]
+        L1 -> L2 [label = "b"]
+        L2 -> L1 [label = "a"]
+    }
+}
+#+end_src
+#+RESULTS: blinkLed
+[[file:./led.png]]
+Quattro varianti:
+
+1. Avviato quando si passa allo stato =RUNNING=.
+   Per tutta la durata di un esperimento il led L1 deve essere acceso. Al termine dell'esperimento il led deve essere spento.
+2. Avviato quando ci si trova nello stato =READY=.
+   Mentre il sistema è pronto ad eseguire un esperimento il led L1 deve essere acceso. Quando si esce dallo stato =READY= il led deve essere spento.
+3. Avviato quando il sistema si trova nello stato =ENDING=.
+   Dal momento in cui un esperimento termina fino al ritorno allo stato inziale il led L2 deve lampeggiare per un tempo determinato.
+4. Avviato quando il sistema si trova nello stato =ERROR=.
+   Il led L1 deve lampeggiare se si ritorna allo stato iniziale dopo la pressione di B_{start}.
+  
+L1: led acceso
+L2: led spento
+
+a: running
+b: !running
+
+* GatherDataTask :running:
+
+#+Name: gatherDataTask
+#+begin_src dot :file ./gatherDataTask.png
+digraph G {
+    node [shape = doublecircle]; S1;
+    node [shape = point ]; qi1;
+    node [shape = circle];
+    rankdir = LR
+
+    qi1 -> S1
+    subgraph cluster_0 {
+        label = GatherDataTask
+        S1 -> S2 [label = "!a"]
+        S2 -> S1 [label = "a"]
+    }
+}
+#+end_src
+#+RESULTS: gatherDataTask
+[[file:./gatherDataTask.png]]
+
+Avviato quando si passa allo stato =RUNNING=.
+
+Durante un esperimento il sonar deve raccogliere dati se è presente un oggetto nel suo campo di rilevamento. Il sonar smette di rilevare la presenza di oggetti se si preme il pulsante B_{end} o dopo un tempo massimo =TIME_EXP=.
+
+Se si preme B_stop, avendo =endButtonPressed = true=,  o se è valida la condizione =timeElapsed > MAX_TIME= allora si setta =running = false=.
+
+S1: sonar attivo
+S2: sonar disattivo
+
+a: running
+
+* ComputeData :running:
+
+#+Name: computeData
+#+begin_src dot :file ./computeData.png
+digraph G {
+    node [shape = doublecircle]; C1;
+    node [shape = point ]; qi3;
+    node [shape = circle];
+    rankdir = LR
+
+    qi3 -> C1
+    subgraph cluster_2 {
+        label = ComputeData
+        C1 -> C1 [label = "!c"]
+        C1 -> C2 [label = "c"]
+        C2 -> C1 [label = "d"]
+    }
+}
+#+end_src
+#+RESULTS: computeData
+[[file:./computeData.png]]
+
+Avviato quando si passa allo stato =RUNNING=.
+
+Durante un esperimento, quando il sonar mette a disposizione nuovi dati sulla distanza, bisogna calcolare la velocità e l'accelerazione.
+
+e poi inviare questi dati al Viewer tramite seriale e mostrare la velocità istantanea con il servo motore. Finché non arrivano nuovi dati si è in attesa.
+
+C1: attesa di nuovi dati
+C2: computazione dei dati
+
+c: currentDistance != oldDistance
+d: !running || currentDistance == oldDistance
+
+* SendData :running:
+
+#+Name: sendData
+#+begin_src dot :file ./sendData.png
+digraph G {
+    node [shape = doublecircle]; C1;
+    node [shape = point ]; qi3;
+    node [shape = circle];
+    rankdir = LR
+
+    qi3 -> C1
+    subgraph cluster_2 {
+        label = SendData
+        C1 -> C2 [label = "c"]
+        C2 -> C1 [label = "d"]
+    }
+}
+#+end_src
+#+RESULTS: sendData
+[[file:./sendData.png]]
+
+Avviato quando si passa allo stato =RUNNING=.
+
+Quando sono disponibili nuovi dati devono essere inviati al Viewer tramite seriale e mostrare la velocità istantanea con il servo motore. Finché non arrivano nuovi dati si è in attesa.
+
+C1: attesa di nuovi dati
+C2: computazione dei dati
+
+c: currentDistance != oldDistance
+d: !running || currentDistance == oldDistance
+
+* DisplaySpeed :running:
+
+#+Name: displaySpeed
+#+begin_src dot :file ./displaySpeed.png
+digraph G {
+    node [shape = doublecircle]; C1;
+    node [shape = point ]; qi3;
+    node [shape = circle];
+    rankdir = LR
+
+    qi3 -> C1
+    subgraph cluster_2 {
+        label = displaySpeed
+        C1 -> C2 [label = "c"]
+        C2 -> C1 [label = "d"]
+    }
+}
+#+end_src
+#+RESULTS: displaySpeed
+[[file:./displaySpeed.png]]
+
+Avviato quando si passa allo stato =RUNNING=.
+
+Quando sono disponibili nuovi dati sulla velocità il servo motore deve mostrarli.
+
+C1: attesa di nuovi dati
+C2: scrittura dei dati sul servo motore
+
+c: currentDistance != oldDistance
+d: !running || currentDistance == oldDistance
+
+* Altro
+
+NOTA: Il servo motore può provocare overrun e si deve tenere conto del tempo richiesto per il debouncing.
+
+La condizione di errore con lampeggiamento dovrebbe essere gestita con un altro task?
+
+DeviceBag risorsa condivisa disponibile per i task, accesso concorrente? No, l'esecuzione è cooperativa.
+
+TaskBag risorsa disponibile allo scheduler.
+
+Ciascun task ha un elenco di altri task da attivare al momento in cui avrebbe invece settato una variabile *booleana* globale di comunicazione per comunicare la possibilità di eseguire ad altri task.
+
+Nel momento in cui un task comunica ad altri task di eseguire può richiedere la propria eliminazione
+
+Se non è IDLE o RUNNING allora è READY.
