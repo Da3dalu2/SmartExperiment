@@ -12,7 +12,7 @@ package controller;
 public class TestPingPong {
 
 	public static void main(String[] args) throws Exception {
-		CommChannel channel = new SerialCommChannel(args[0],9600);	
+		CommChannel channel = new SerialCommChannel("/dev/ttyACM0", 9600);	
 		// CommChannel channel = new SerialCommChannel("/dev/cu.usbmodem1411",9600);	
 		// CommChannel channel = new SerialCommChannel("/dev/cu.isi00-DevB",9600);	
 		
@@ -21,7 +21,6 @@ public class TestPingPong {
 		Thread.sleep(4000);
 		System.out.println("Ready.");		
 
-		
 		while (true){
 			System.out.println("Sending ping");
 			channel.sendMsg("ping");

@@ -1,7 +1,8 @@
 package model;
 
+import java.util.Map;
+
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.xy.XYDataset;
 
 /**
  * Interface for generating charts with custom settings.
@@ -15,5 +16,5 @@ public interface ChartFactoryWrapper {
      *
      * @return A chart.
      */
-	public JFreeChart createChart(XYDataset dataset);
+	public JFreeChart createCombinedChart(Map<SensorMetrics, DynamicTimeSeriesCollectionWrapper> datasets);
 }
