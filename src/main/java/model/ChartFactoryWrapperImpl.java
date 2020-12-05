@@ -57,13 +57,13 @@ public class ChartFactoryWrapperImpl implements ChartFactoryWrapper {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public JFreeChart createCombinedChart(Map<SensorMetrics, DynamicTimeSeriesCollectionWrapper> datasets) {
+	public JFreeChart createCombinedChart(Map<SensorMeasures, DynamicTimeSeriesCollectionWrapper> datasets) {
 		ValueAxis timeAxis = new DateAxis("hh:mm:ss");
         timeAxis.setLowerMargin(0.02);
         timeAxis.setUpperMargin(0.02);
     	final CombinedDomainXYPlot plot = new CombinedDomainXYPlot(timeAxis);
     	PlotNumber plotNumber = PlotNumber.firstPlot;
-    	for(Entry<SensorMetrics, DynamicTimeSeriesCollectionWrapper> labeledDataset : datasets.entrySet()) {
+    	for(Entry<SensorMeasures, DynamicTimeSeriesCollectionWrapper> labeledDataset : datasets.entrySet()) {
     		XYPlot subplot = createPlot(labeledDataset.getValue().getDataset(), labeledDataset.getValue().getLabel());
 			subplot.setRangeAxisLocation(placePlot(plotNumber).orElseThrow());
     		plot.add(subplot, 1);

@@ -16,5 +16,5 @@ public interface ChartFactoryWrapper {
      *
      * @return A chart.
      */
-	public JFreeChart createCombinedChart(Map<SensorMetrics, DynamicTimeSeriesCollectionWrapper> datasets);
+	public JFreeChart createCombinedChart(Map<SensorMeasures, DynamicTimeSeriesCollectionWrapper> datasets);
 }

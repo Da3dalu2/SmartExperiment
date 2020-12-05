@@ -1,7 +1,9 @@
-package model;
+package view;
 
 import org.jfree.data.time.DynamicTimeSeriesCollection;
 import org.jfree.data.time.Second;
+
+import model.DynamicTimeSeriesCollectionWrapper;
 
 public class DatasetGeneratorImpl implements DatasetGenerator {
 

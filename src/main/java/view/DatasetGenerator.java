@@ -1,4 +1,6 @@
-package model;
+package view;
+
+import model.DynamicTimeSeriesCollectionWrapper;
 
 public interface DatasetGenerator {
 

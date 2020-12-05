@@ -1,10 +1,10 @@
 package controller;
 
-import model.SensorMetrics;
+import model.SensorMeasures;
 
 public interface MsgParser {
 
-	float[] getIncomingData(SensorMetrics metric);
+	float[] getIncomingData(SensorMeasures metric);
 	
 	void parseIncomingData();
 

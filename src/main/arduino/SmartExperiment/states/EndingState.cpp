@@ -8,7 +8,11 @@ EndingState::EndingState(UpdateStatusTask& task) {
 void EndingState::execute() {
     endConfirmationReceived = task.isEndConfirmationReceived();
     if ( endConfirmationReceived ) {
-        task.updateState(*new ReadyState(task));
+        if ( confirmed ) {
+            task.updateState(*new ReadyState(task));
+        } else {
+            task.updateState(*new RunningState(task));
+        }
     }
 }
 
