@@ -28,4 +28,10 @@ public interface CommChannel {
 	 */
 	boolean isMsgAvailable();
 
+	/**
+	 * Tell the operative system that the serial port chosen is no longer
+	 * needed.
+	 */
+	void close();
+
 }

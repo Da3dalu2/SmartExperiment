@@ -32,4 +32,9 @@ public interface View {
 	 */
 	boolean requestExperimentationEndConfirmation();
 
+	/**
+	 * Deallocate resources used for running the application.
+	 */
+	void deallocateResources();
+
 }

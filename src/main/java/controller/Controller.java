@@ -12,4 +12,8 @@ public interface Controller {
 	boolean askForEndConfirmation();
 
 	void updateSystemStatus(SystemStatus status);
+
+	void cleanClose();
+
+	void init();
 }

@@ -1,8 +1,10 @@
 package controller;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,26 +15,39 @@ public class MsgParserImpl implements MsgParser {
 
 	Map<SensorMeasures, BlockingQueue<Float>> dataQueues;
 	private static final Logger logger = Logger.getLogger("MsgParserImpl");
+	private static final int MESSAGE_QUEUE_CAPACITY = 250;
 	private final CommChannel commChannel;
 	private final Controller controller;
 
 	MsgParserImpl(CommChannel commChannel, Controller controller) {
+		dataQueues = new HashMap<>();
+		initDataQueues();
 		this.commChannel = commChannel;
 		this.controller = controller;
 	}
 
+	private void initDataQueues() {
+		for (final SensorMeasures measure : SensorMeasures.values()) {
+			final BlockingQueue<Float> measureQueue = new ArrayBlockingQueue<>(
+					MESSAGE_QUEUE_CAPACITY);
+			dataQueues.put(measure, measureQueue);
+		}
+	}
+
 	@Override
 	public float[] getIncomingData(SensorMeasures metric) {
-		final float[] newData = new float[1];
-		try {
-			newData[0] = dataQueues.get(metric).poll(50, TimeUnit.MILLISECONDS);
-		} catch (final InterruptedException e) {
-			logger.log(Level.SEVERE, e.toString());
+		Optional<Float> newData = Optional.empty();
+		newData = Optional.ofNullable(dataQueues.get(metric).poll());
+		logger.log(Level.INFO,
+				"[Timer]: gathering data for " + metric.toString() + "\n");
+		final float[] data = new float[1];
+		if (newData.isEmpty()) {
+			logger.log(Level.INFO, "[Timer]: no data received");
+			data[0] = 0;
+		} else {
+			data[0] = newData.get();
 		}
-		if (newData.length == 0) {
-			newData[0] = 0;
-		}
-		return newData;
+		return data;
 	}
 
 	@Override
@@ -41,30 +56,48 @@ public class MsgParserImpl implements MsgParser {
 		if (commChannel.isMsgAvailable()) {
 			try {
 				msg = commChannel.receiveMsg();
+				logger.log(Level.INFO, msg);
 			} catch (final InterruptedException e) {
 				logger.log(Level.SEVERE, e.toString());
 			}
+			handleMessage(msg);
 		}
-
-		handleMessage(msg);
 	}
 
 	private void handleMessage(String msg) {
 		switch (msg) {
 		case "{running}":
+			logger.log(Level.INFO, "[ParserLoop]: Experiment began!");
 			controller.updateSystemStatus(SystemStatus.Running);
+			break;
 		case "{ending}":
-			if (controller.askForEndConfirmation())
-				controller.updateSystemStatus(SystemStatus.Ready);
-			else
-				controller.updateSystemStatus(SystemStatus.Running);
+			if (controller.askForEndConfirmation()) {
+				logger.log(Level.INFO,
+						"[ParserLoop]: experiment ending confirmed");
+				commChannel.sendMsg("{exitConfirmed}");
+			} else {
+				logger.log(Level.INFO,
+						"[ParserLoop]: experiment ending not confirmed");
+				commChannel.sendMsg("{exitNotConfirmed}");
+			}
+			break;
 		case "{error}":
+			logger.log(Level.INFO, "[ParserLoop]: Error detected");
 			controller.updateSystemStatus(SystemStatus.Error);
+			break;
 		case "{suspended}":
+			logger.log(Level.INFO,
+					"[ParserLoop]:: System entered power-saving mode");
 			controller.updateSystemStatus(SystemStatus.Suspended);
+			break;
 		case "{ready}":
+			logger.log(Level.INFO, "[ParserLoop]: The system is ready");
 			controller.updateSystemStatus(SystemStatus.Ready);
+			break;
 		default:
+			logger.log(Level.INFO,
+					"[ParserLoop]: Processing the message received to extract"
+							+ "measurements");
 			extractSensorMeasures(msg);
 		}
 	}

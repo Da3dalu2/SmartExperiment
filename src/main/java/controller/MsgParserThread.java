@@ -4,15 +4,13 @@ import model.ExperimentationSystem;
 
 public final class MsgParserThread extends Thread implements MsgParserLoop {
 
-	private static final long MS_BETWEEN_TICKS = 0;
+	private static final long MS_BETWEEN_TICKS = 20;
 	private final MsgParser parser;
-	// private final ExperimentationSystem system;
 	private volatile boolean paused;
 	private volatile boolean stopped;
 
 	private MsgParserThread(final MsgParser parser,
 			final ExperimentationSystem system) {
-		// this.system = system;
 		this.parser = parser;
 		paused = false;
 		stopped = false;
@@ -59,35 +57,29 @@ public final class MsgParserThread extends Thread implements MsgParserLoop {
 
 	@Override
 	public void run() {
-		// long lastTime; // = System.currentTimeMillis();
 		while (!stopped) {
 			if (paused) {
 				handlePauseState();
-				// lastTime = System.currentTimeMillis() - MS_BETWEEN_TICKS;
 			}
 			final long current = System.currentTimeMillis();
 			parseData();
 			waitForNextFrame(current);
-			// lastTime = current;
 		}
 	}
 
 	@Override
 	public synchronized void pauseLoop() {
 		paused = true;
-		// system.setStatus(SystemStatus.Suspended);
 	}
 
 	@Override
 	public synchronized void resumeLoop() {
 		paused = false;
-		// system.setStatus(SystemStatus.Running);
 		notifyAll();
 	}
 
 	@Override
 	public synchronized void startLoop() {
-		// system.setStatus(SystemStatus.Running);
 		start();
 	}
 }

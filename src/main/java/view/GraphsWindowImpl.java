@@ -2,6 +2,8 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Map;
 
 import javax.swing.JPanel;
@@ -10,6 +12,7 @@ import javax.swing.Timer;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.ui.ApplicationFrame;
 
 import model.ChartFactoryWrapper;
 import model.ChartFactoryWrapperImpl;
@@ -17,7 +20,7 @@ import model.DynamicTimeSeriesCollectionWrapper;
 import model.SensorMeasures;
 import model.SystemStatus;
 
-public class GraphsWindowImpl extends org.jfree.chart.ui.ApplicationFrame implements GraphsWindow {
+public class GraphsWindowImpl extends ApplicationFrame implements GraphsWindow {
 
 	/**
 	 *
@@ -32,7 +35,8 @@ public class GraphsWindowImpl extends org.jfree.chart.ui.ApplicationFrame implem
 		super(title);
 		graphWindowLogics = new GraphsWindowLogicsImpl(view);
 		chartFactory = new ChartFactoryWrapperImpl();
-		final Map<SensorMeasures, DynamicTimeSeriesCollectionWrapper> datasets = graphWindowLogics.initDatasets();
+		final Map<SensorMeasures, DynamicTimeSeriesCollectionWrapper> datasets = graphWindowLogics
+				.initDatasets();
 		timer = graphWindowLogics.getTimer();
 
 		final JFreeChart chart = chartFactory.createCombinedChart(datasets);
@@ -43,6 +47,14 @@ public class GraphsWindowImpl extends org.jfree.chart.ui.ApplicationFrame implem
 		displayStatus = graphWindowLogics.setDisplayStatus(panel);
 
 		this.add(panel, BorderLayout.SOUTH);
+
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				view.deallocateResources();
+				System.exit(0);
+			}
+		});
 	}
 
 	@Override
@@ -52,6 +64,8 @@ public class GraphsWindowImpl extends org.jfree.chart.ui.ApplicationFrame implem
 
 	@Override
 	public void updateStatusDisplay(SystemStatus status) {
+		displayStatus.setEditable(true);
 		displayStatus.setText(status.toString());
+		displayStatus.setEditable(false);
 	}
 }

@@ -15,11 +15,11 @@ public final class Main {
 	/**
 	 * @param args unused
 	 */
-	 public static void main(final String[] args) {
-		 ExperimentationSystem system = new ExperimentationSystemImpl();
-		 Controller controller = new ControllerImpl(system);
-		 View view = new ViewImpl(controller);
-		 controller.setView(view);
-		 view.launch();
-	 }
+	public static void main(final String[] args) {
+		final ExperimentationSystem system = new ExperimentationSystemImpl();
+		final Controller controller = new ControllerImpl(system);
+		final View view = new ViewImpl(controller);
+		controller.setView(view);
+		view.launch();
+	}
 }

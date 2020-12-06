@@ -8,10 +8,10 @@ void setup() {
     Serial.begin(9600);
     schedulerManager = new SchedulerManager();
     scheduler = new Scheduler(schedulerManager);
-    scheduler->init(50);
-//  scheduler->addAllTask(taskBag.getTasks());
+    schedulerManager->init(scheduler);
+    scheduler->init(1000); // MCM of all other tasks, milliseconds
 }
 
 void loop() {
     scheduler->schedule();
-};
+}

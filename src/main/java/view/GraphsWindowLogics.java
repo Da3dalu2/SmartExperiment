@@ -13,8 +13,6 @@ public interface GraphsWindowLogics {
 
 	Map<SensorMeasures, DynamicTimeSeriesCollectionWrapper> initDatasets();
 
-	void setButtons(JPanel panel);
-
 	JTextField setDisplayStatus(JPanel panel);
 
 	Timer getTimer();

@@ -2,22 +2,26 @@ package controller;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 
 /**
- * Comm channel implementation based on serial port.
+ * Communication channel implementation using jssc.
  */
 public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 
 	private final SerialPort serialPort;
 	private final BlockingQueue<String> queue;
 	private StringBuffer currentMsg = new StringBuffer("");
+	private static final int MESSAGE_QUEUE_CAPACITY = 1000;
+	private static final Logger logger = Logger.getLogger("ControllerImpl");
 
 	public SerialCommChannel(String port, int rate) throws Exception {
-		queue = new ArrayBlockingQueue<String>(100);
+		queue = new ArrayBlockingQueue<String>(MESSAGE_QUEUE_CAPACITY);
 
 		serialPort = new SerialPort(port);
 		serialPort.openPort();
@@ -28,7 +32,6 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 		serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN
 				| SerialPort.FLOWCONTROL_RTSCTS_OUT);
 
-		// serialPort.addEventListener(this, SerialPort.MASK_RXCHAR);
 		serialPort.addEventListener(this);
 	}
 
@@ -43,8 +46,8 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 			synchronized (serialPort) {
 				serialPort.writeBytes(bytes);
 			}
-		} catch (final Exception ex) {
-			ex.printStackTrace();
+		} catch (final Exception e) {
+			logger.log(Level.SEVERE, e.toString());
 		}
 	}
 
@@ -59,17 +62,17 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 	}
 
 	/**
-	 * This should be called when you stop using the port. This will prevent
-	 * port locking on platforms like Linux.
+	 * This method is called to avoid port locking on Unix-like platforms.
 	 */
+	@Override
 	public void close() {
 		try {
 			if (serialPort != null) {
 				serialPort.removeEventListener();
 				serialPort.closePort();
 			}
-		} catch (final Exception ex) {
-			ex.printStackTrace();
+		} catch (final Exception e) {
+			logger.log(Level.SEVERE, e.toString());
 		}
 	}
 
@@ -100,10 +103,8 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 					}
 				}
 
-			} catch (final Exception ex) {
-				ex.printStackTrace();
-				System.out.println(
-						"Error in receiving string from COM-port: " + ex);
+			} catch (final Exception e) {
+				logger.log(Level.SEVERE, e.toString());
 			}
 		}
 	}

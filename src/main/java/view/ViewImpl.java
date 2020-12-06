@@ -13,11 +13,10 @@ public class ViewImpl implements View {
 
 	private static final String TITLE = "Viewer";
 	private final Controller controller;
-	private final GraphsWindowImpl graphsWindow;
+	private GraphsWindowImpl graphsWindow;
 
 	public ViewImpl(final Controller controller) {
 		this.controller = controller;
-		graphsWindow = new GraphsWindowImpl(TITLE, this);
 	}
 
 	/**
@@ -25,9 +24,12 @@ public class ViewImpl implements View {
 	 */
 	@Override
 	public void launch() {
+		final View view = this;
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				controller.init();
+				graphsWindow = new GraphsWindowImpl(TITLE, view);
 				graphsWindow.pack();
 				graphsWindow.setVisible(true);
 				graphsWindow.start();
@@ -65,6 +67,11 @@ public class ViewImpl implements View {
 	@Override
 	public MsgParser getMsgParser() {
 		return controller.getMsgParser();
+	}
+
+	@Override
+	public void deallocateResources() {
+		controller.cleanClose();
 	}
 
 }
