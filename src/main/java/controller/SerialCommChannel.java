@@ -14,11 +14,13 @@ import jssc.SerialPortEventListener;
  */
 public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 
+	private static final Logger logger = Logger.getLogger("SerialCommChannel");
+
 	private final SerialPort serialPort;
+
 	private final BlockingQueue<String> queue;
 	private StringBuffer currentMsg = new StringBuffer("");
 	private static final int MESSAGE_QUEUE_CAPACITY = 1000;
-	private static final Logger logger = Logger.getLogger("ControllerImpl");
 
 	public SerialCommChannel(String port, int rate) throws Exception {
 		queue = new ArrayBlockingQueue<String>(MESSAGE_QUEUE_CAPACITY);
@@ -39,9 +41,8 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 	public void sendMsg(String msg) {
 		final char[] array = (msg + "\n").toCharArray();
 		final byte[] bytes = new byte[array.length];
-		for (int i = 0; i < array.length; i++) {
+		for (int i = 0; i < array.length; i++)
 			bytes[i] = (byte) array[i];
-		}
 		try {
 			synchronized (serialPort) {
 				serialPort.writeBytes(bytes);
@@ -79,7 +80,7 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 	@Override
 	public void serialEvent(SerialPortEvent event) {
 		/* if there are bytes received in the input buffer */
-		if (event.isRXCHAR()) {
+		if (event.isRXCHAR())
 			try {
 				String msg = serialPort.readString(event.getEventValue());
 
@@ -95,17 +96,14 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 					if (index >= 0) {
 						queue.put(msg2.substring(0, index));
 						currentMsg = new StringBuffer("");
-						if (index + 1 < msg2.length()) {
+						if (index + 1 < msg2.length())
 							currentMsg.append(msg2.substring(index + 1));
-						}
-					} else {
+					} else
 						goAhead = false;
-					}
 				}
 
 			} catch (final Exception e) {
 				logger.log(Level.SEVERE, e.toString());
 			}
-		}
 	}
 }

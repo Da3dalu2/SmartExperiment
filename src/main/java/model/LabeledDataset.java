@@ -3,11 +3,11 @@ package model;
 import org.jfree.data.time.DynamicTimeSeriesCollection;
 import javafx.util.Pair;
 
-public class DynamicTimeSeriesCollectionWrapper implements IDynamicTimeSeriesCollectionWrapper {
+public class LabeledDataset implements ILabeledDataset {
 
 	private Pair<DynamicTimeSeriesCollection, String> pair;
 	
-	public DynamicTimeSeriesCollectionWrapper(DynamicTimeSeriesCollection timeSeries, String ylabel) {
+	public LabeledDataset(DynamicTimeSeriesCollection timeSeries, String ylabel) {
 		pair = new Pair<>(timeSeries, ylabel);
 	}
 	

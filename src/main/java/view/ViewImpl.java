@@ -25,10 +25,10 @@ public class ViewImpl implements View {
 	@Override
 	public void launch() {
 		final View view = this;
+		controller.init();
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				controller.init();
 				graphsWindow = new GraphsWindowImpl(TITLE, view);
 				graphsWindow.pack();
 				graphsWindow.setVisible(true);
@@ -53,11 +53,10 @@ public class ViewImpl implements View {
 		boolean confirmationReceived;
 		if (JOptionPane.showConfirmDialog(new JFrame(),
 				"Do you want to end the experiment?", "Experimentation end",
-				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
 			confirmationReceived = true;
-		} else {
+		else
 			confirmationReceived = false;
-		}
 		return confirmationReceived;
 	}
 

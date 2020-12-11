@@ -38,29 +38,26 @@ public final class MsgParserThread extends Thread implements MsgParserLoop {
 
 	private void waitForNextFrame(final long current) {
 		final long dt = System.currentTimeMillis() - current;
-		if (dt < MS_BETWEEN_TICKS) {
+		if (dt < MS_BETWEEN_TICKS)
 			try {
 				Thread.sleep(MS_BETWEEN_TICKS - dt);
 			} catch (final InterruptedException ex) {
 			}
-		}
 	}
 
 	private synchronized void handlePauseState() {
-		while (paused) {
+		while (paused)
 			try {
 				this.wait();
 			} catch (final InterruptedException e) {
 			}
-		}
 	}
 
 	@Override
 	public void run() {
 		while (!stopped) {
-			if (paused) {
+			if (paused)
 				handlePauseState();
-			}
 			final long current = System.currentTimeMillis();
 			parseData();
 			waitForNextFrame(current);

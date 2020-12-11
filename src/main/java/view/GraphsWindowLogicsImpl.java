@@ -16,7 +16,7 @@ import javax.swing.Timer;
 import org.jfree.data.time.DynamicTimeSeriesCollection;
 
 import controller.MsgParser;
-import model.DynamicTimeSeriesCollectionWrapper;
+import model.LabeledDataset;
 import model.SensorMeasures;
 import model.SystemStatus;
 
@@ -26,11 +26,13 @@ public class GraphsWindowLogicsImpl implements GraphsWindowLogics {
 	private static final int COUNT = 2 * 60;
 	private static final int FAST = 100;
 	private static final SystemStatus BEGIN_STATUS = SystemStatus.Ready;
+
 	private static final Logger logger = Logger
 			.getLogger("GraphsWindowLogicsImpl");
+
 	private static final Random random = new Random();
 	private final MsgParser parser;
-	private final Map<SensorMeasures, DynamicTimeSeriesCollectionWrapper> datasets;
+	private final Map<SensorMeasures, LabeledDataset> datasets;
 	private Timer timer;
 
 	public final DatasetGenerator realtimeDataGenerator;
@@ -43,32 +45,20 @@ public class GraphsWindowLogicsImpl implements GraphsWindowLogics {
 	}
 
 	@Override
-	public Map<SensorMeasures, DynamicTimeSeriesCollectionWrapper> initDatasets() {
-		final DynamicTimeSeriesCollectionWrapper speedDataset = realtimeDataGenerator
+	public Map<SensorMeasures, LabeledDataset> initDatasets() {
+		final LabeledDataset speedDataset = realtimeDataGenerator
 				.createDataset(gaussianData(), "Object's speed", "m/s");
 		datasets.put(SensorMeasures.Speed, speedDataset);
 
-		final DynamicTimeSeriesCollectionWrapper distanceDataset = realtimeDataGenerator
+		final LabeledDataset distanceDataset = realtimeDataGenerator
 				.createDataset(gaussianData(), "Object's distance", "m");
 		datasets.put(SensorMeasures.Distance, distanceDataset);
 
-		final DynamicTimeSeriesCollectionWrapper accelerationDataset = realtimeDataGenerator
+		final LabeledDataset accelerationDataset = realtimeDataGenerator
 				.createDataset(gaussianData(), "Object's acceleration",
 						"m/s^2");
 		datasets.put(SensorMeasures.Acceleration, accelerationDataset);
 		return datasets;
-	}
-
-	private float randomValue() {
-		return (float) (random.nextGaussian() * MINMAX / 3);
-	}
-
-	private float[] gaussianData() {
-		final float[] a = new float[COUNT];
-		for (int i = 0; i < a.length; i++) {
-			a[i] = randomValue();
-		}
-		return a;
 	}
 
 	@Override
@@ -80,12 +70,17 @@ public class GraphsWindowLogicsImpl implements GraphsWindowLogics {
 		return displayStatus;
 	}
 
+	@Override
+	public Timer getTimer() {
+		return timer;
+	}
+
 	private Timer createTimer() {
 		timer = new Timer(FAST, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (final Entry<SensorMeasures, DynamicTimeSeriesCollectionWrapper> metricDataset : datasets
+				for (final Entry<SensorMeasures, LabeledDataset> metricDataset : datasets
 						.entrySet()) {
 					logger.log(Level.INFO, "[Timer]: getting data");
 					final DynamicTimeSeriesCollection dataset = metricDataset
@@ -99,9 +94,18 @@ public class GraphsWindowLogicsImpl implements GraphsWindowLogics {
 		return timer;
 	}
 
-	@Override
-	public Timer getTimer() {
-		return timer;
+	/**
+	 * Utility to plot random data used to initialize the graphs.
+	 * @return
+	 */
+	private float[] gaussianData() {
+		final float[] a = new float[COUNT];
+		for (int i = 0; i < a.length; i++)
+			a[i] = randomValue();
+		return a;
 	}
 
+	private float randomValue() {
+		return (float) (random.nextGaussian() * MINMAX / 3);
+	}
 }

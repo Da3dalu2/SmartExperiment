@@ -13,9 +13,11 @@ import model.SystemStatus;
 
 public class MsgParserImpl implements MsgParser {
 
-	Map<SensorMeasures, BlockingQueue<Float>> dataQueues;
 	private static final Logger logger = Logger.getLogger("MsgParserImpl");
+
+	Map<SensorMeasures, BlockingQueue<Float>> dataQueues;
 	private static final int MESSAGE_QUEUE_CAPACITY = 250;
+
 	private final CommChannel commChannel;
 	private final Controller controller;
 
@@ -44,9 +46,8 @@ public class MsgParserImpl implements MsgParser {
 		if (newData.isEmpty()) {
 			logger.log(Level.INFO, "[Timer]: no data received");
 			data[0] = 0;
-		} else {
+		} else
 			data[0] = newData.get();
-		}
 		return data;
 	}
 
@@ -105,9 +106,8 @@ public class MsgParserImpl implements MsgParser {
 	private void extractSensorMeasures(String msg) {
 		final String[] tokens = msg.split("[\\[\\];]+");
 
-		if (tokens.length != SensorMeasures.values().length - 1) {
+		if (tokens.length != SensorMeasures.values().length - 1)
 			logger.log(Level.WARNING, "Invalid message");
-		}
 
 		final float speed = Float.parseFloat(tokens[1]);
 		final float distance = Float.parseFloat(tokens[2]);

@@ -5,15 +5,16 @@ import view.View;
 
 public interface Controller {
 
-	MsgParser getMsgParser();
-
 	void setView(View view);
 
-	boolean askForEndConfirmation();
+	void init();
+
+	MsgParser getMsgParser();
 
 	void updateSystemStatus(SystemStatus status);
 
+	boolean askForEndConfirmation();
+
 	void cleanClose();
 
-	void init();
 }

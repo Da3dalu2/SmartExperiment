@@ -1,8 +1,8 @@
 package view;
 
-import model.DynamicTimeSeriesCollectionWrapper;
+import model.LabeledDataset;
 
 public interface DatasetGenerator {
 
-	DynamicTimeSeriesCollectionWrapper createDataset(float[] values, String seriesName, String ylabel);
+	LabeledDataset createDataset(float[] values, String seriesName, String ylabel);
 }

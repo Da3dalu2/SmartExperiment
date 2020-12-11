@@ -2,7 +2,7 @@ package model;
 
 import org.jfree.data.time.DynamicTimeSeriesCollection;
 
-public interface IDynamicTimeSeriesCollectionWrapper {
+public interface ILabeledDataset {
 
 	DynamicTimeSeriesCollection getDataset();
 	

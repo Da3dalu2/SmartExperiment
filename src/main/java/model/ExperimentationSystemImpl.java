@@ -5,7 +5,7 @@ public class ExperimentationSystemImpl implements ExperimentationSystem {
 	private SystemStatus status;
 
 	public ExperimentationSystemImpl() {
-		status = SystemStatus.Running;
+		status = SystemStatus.Ready;
 	}
 
 	@Override
