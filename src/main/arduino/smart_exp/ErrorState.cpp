@@ -17,7 +17,7 @@ void ErrorState::execute() {
         task.updateState(*new SuspendedState(task));
     }*/
     task->updateState(new EndingState(task));
-    logger.log("resolving Error state");
+    //logger.log("resolving Error state");
 }
 
 EnumState ErrorState::getState() {

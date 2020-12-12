@@ -5,8 +5,6 @@
 #include "SchedulerManager.h"
 #include <TimerOne.h>
 #include <LinkedList.h>
-#include <avr/sleep.h>
-#include <avr/power.h>
 
 class SchedulerManager;
 
@@ -23,7 +21,6 @@ public:
      LinkedList<Task*> getTaskList();
 
 private:
-     void sleep();
      const uint8_t maxTasks = 50;
      uint16_t basePeriod;
      SchedulerManager* schedMgr;

@@ -15,15 +15,15 @@ public:
 
     void logValue(String msg, uint16_t value) {
 #ifdef DEBUG
-        Serial.println(msg);
-        Serial.print(value);
+        Serial.print(msg);
+        Serial.println(value);
 #endif
     }
 
     void logParam(String msg, String param) {
 #ifdef DEBUG
-        Serial.println(msg);
-        Serial.print(param);
+        Serial.print(msg);
+        Serial.println(param);
 #endif
     }
 

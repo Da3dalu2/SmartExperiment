@@ -1,7 +1,5 @@
 package view;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -26,15 +24,11 @@ public class ViewImpl implements View {
 	public void launch() {
 		final View view = this;
 		controller.init();
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				graphsWindow = new GraphsWindowImpl(TITLE, view);
-				graphsWindow.pack();
-				graphsWindow.setVisible(true);
-				graphsWindow.start();
-			}
-		});
+		graphsWindow = new GraphsWindowImpl(TITLE, view);
+		graphsWindow.pack();
+		graphsWindow.setVisible(true);
+		graphsWindow.start();
+
 	}
 
 	/**
@@ -50,7 +44,7 @@ public class ViewImpl implements View {
 	 */
 	@Override
 	public boolean requestExperimentationEndConfirmation() {
-		boolean confirmationReceived;
+		boolean confirmationReceived = false;
 		if (JOptionPane.showConfirmDialog(new JFrame(),
 				"Do you want to end the experiment?", "Experimentation end",
 				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)

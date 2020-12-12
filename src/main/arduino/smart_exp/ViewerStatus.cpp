@@ -30,7 +30,8 @@ void ViewerStatus::displayStatusOnViewer(EnumState currentState) {
         }
     }
 
-    if ( currentState == EnumState::Ending && MsgService.isMsgAvailable() ) {
+    // CONFIRMATION
+    /*if ( currentState == EnumState::Ending && MsgService.isMsgAvailable() ) {
         String msg = MsgService.receiveMsg()->getContent();
         if ( msg == "{exitConfirmed}") {
             bool endConfirmationReceived = true;
@@ -43,7 +44,7 @@ void ViewerStatus::displayStatusOnViewer(EnumState currentState) {
             taskDirector->notifyEndConfirmationReceived(
                 endConfirmationReceived, exitConfirmed);
         }
-    }
+    }*/
 
-    previousState = currentState;   
+    previousState = currentState;
 }

@@ -15,7 +15,7 @@ class DetectObjectDistanceTask: public StateObserver, public Communicator, publi
 
 public:
     DetectObjectDistanceTask(uint8_t trigPin, uint8_t echoPin, uint8_t tempPin);
-    void update(UpdateStatusTask& subject);
+    void update(EnumState state);
     void tick();
     void updateSamplingFrequency(uint8_t samplingFrequency);
     void init(uint16_t period);

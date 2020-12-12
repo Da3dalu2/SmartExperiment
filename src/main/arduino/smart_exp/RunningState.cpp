@@ -13,7 +13,7 @@ void RunningState::execute() {
         timeElapsed++;
     }*/
     task->updateState(new ErrorState(task, "no object detected"));
-    logger.log("resolving Running state");
+    //logger.log("resolving Running state");
 }
 
 EnumState RunningState::getState() {

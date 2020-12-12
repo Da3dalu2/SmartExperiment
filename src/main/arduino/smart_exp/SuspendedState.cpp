@@ -6,12 +6,10 @@ SuspendedState::SuspendedState(UpdateStatusTask* task) {
 }
 
 void SuspendedState::execute() {
-    /*motionDetected = task.isMotionDetected();
-    if ( motionDetected ) {
-        task.updateState(*new ReadyState(task));
-    }*/
-    task->updateState(new ReadyState(task));
-    logger.log("resolving Suspended state");
+    motionDetected = task->isMotionDetected();
+    if ( motionDetected )
+        task->updateState(new ReadyState(task));
+    //logger.log("resolving Suspended state");
 }
 
 EnumState SuspendedState::getState() {

@@ -5,6 +5,7 @@ volatile bool movement;
 
 void onMotionDetected() {
     movement = true;
+    sleep_disable();
 }
 
 DetectMotionTask::DetectMotionTask(uint8_t pin) {
@@ -19,7 +20,7 @@ void DetectMotionTask::init(uint16_t period) {
 }
 
 void DetectMotionTask::attachInterruptToPir() {
-    attachInterrupt(digitalPinToInterrupt(pin), onMotionDetected, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(pin), onMotionDetected, RISING);
 }
 
 void DetectMotionTask::detachInterruptFromPir() {
@@ -30,8 +31,8 @@ void DetectMotionTask::tick() {
     noInterrupts();
     if ( movement ) {
         movement = false;
+        detachInterrupt(digitalPinToInterrupt(pin));
         taskDirector->notifyMotionDetectedChange(pir->isMotionDetected());
     }
     interrupts();
 }
-

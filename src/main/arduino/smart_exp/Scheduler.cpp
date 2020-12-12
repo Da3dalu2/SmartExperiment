@@ -26,7 +26,8 @@ bool Scheduler::addTask(Task* task) {
           return false; 
 }
 
-bool Scheduler:: addTaskList(LinkedList<Task*> taskList) {
+bool Scheduler::addTaskList(LinkedList<Task*> taskList) {
+    
     bool op_succeded = true;
     for (uint8_t i = 0; i < taskList.size(); i++) {
         op_succeded = op_succeded && addTask(taskList.get(i));
@@ -51,31 +52,13 @@ void Scheduler::clearTaskList() {
 void Scheduler::schedule() {   
     while (!timerFlag){}
     timerFlag = false;
-    
-    //sleep();
+
      for (uint8_t i = 0; i < taskList.size(); i++){
           if ( taskList.get(i)->updateAndCheckTime(basePeriod) )
                taskList.get(i)->tick();
      }
 
-     //schedMgr->checkScheduling();
-}
-
-void Scheduler::sleep() {
-     delay(1000); /* fix needed to make it work */
-
-     set_sleep_mode(SLEEP_MODE_ADC);
-     sleep_enable();
-
-     /*power_adc_disable();
-     power_spi_disable();
-     power_timer0_disable();
-     power_timer2_disable();
-     power_twi_disable();  */
-
-     sleep_mode();  
-     sleep_disable();
-     //power_all_enable();  
+     schedMgr->checkScheduling();
 }
 
 LinkedList<Task*> Scheduler::getTaskList() {

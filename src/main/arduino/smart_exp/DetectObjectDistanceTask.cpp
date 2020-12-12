@@ -22,8 +22,8 @@ void DetectObjectDistanceTask::tick() {
         taskDirector->notifyObjectDistanceChange(sonar->getDistance(), sonar->getTime());
 }
 
-void DetectObjectDistanceTask::update(UpdateStatusTask& subject) {
-    this->currentState = subject.getCurrentState();
+void DetectObjectDistanceTask::update(EnumState state) {
+    this->currentState = state;
 }
 
 void DetectObjectDistanceTask::updateSamplingFrequency(

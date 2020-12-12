@@ -15,7 +15,7 @@ void UpdateStatusTask::init(uint32_t period) {
 }
 
 void UpdateStatusTask::tick() {
-    logger.log("[UPDATE-STATUS]: ");
+    //logger.log("[UPDATE-STATUS]: ");
     currentState->execute();
 }
 

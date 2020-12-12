@@ -72,7 +72,7 @@ public class MsgParserImpl implements MsgParser {
 			controller.updateSystemStatus(SystemStatus.Running);
 			break;
 		case "{ending}":
-			if (controller.askForEndConfirmation()) {
+			/*if (controller.askForEndConfirmation()) {
 				logger.log(Level.INFO,
 						"[ParserLoop]: experiment ending confirmed");
 				commChannel.sendMsg("{exitConfirmed}");
@@ -80,7 +80,8 @@ public class MsgParserImpl implements MsgParser {
 				logger.log(Level.INFO,
 						"[ParserLoop]: experiment ending not confirmed");
 				commChannel.sendMsg("{exitNotConfirmed}");
-			}
+			}*/
+			logger.log(Level.INFO, "[ParserLoop]: Ending experiment");
 			break;
 		case "{error}":
 			logger.log(Level.INFO, "[ParserLoop]: Error detected");
@@ -88,7 +89,7 @@ public class MsgParserImpl implements MsgParser {
 			break;
 		case "{suspended}":
 			logger.log(Level.INFO,
-					"[ParserLoop]:: System entered power-saving mode");
+					"[ParserLoop]: System entered power-saving mode");
 			controller.updateSystemStatus(SystemStatus.Suspended);
 			break;
 		case "{ready}":

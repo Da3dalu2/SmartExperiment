@@ -1,9 +1,13 @@
 package controller;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import model.ExperimentationSystem;
 
 public final class MsgParserThread extends Thread implements MsgParserLoop {
 
+	private static final Logger logger = Logger.getLogger("MsgParserThread");
 	private static final long MS_BETWEEN_TICKS = 20;
 	private final MsgParser parser;
 	private volatile boolean paused;
@@ -41,7 +45,8 @@ public final class MsgParserThread extends Thread implements MsgParserLoop {
 		if (dt < MS_BETWEEN_TICKS)
 			try {
 				Thread.sleep(MS_BETWEEN_TICKS - dt);
-			} catch (final InterruptedException ex) {
+			} catch (final InterruptedException e) {
+				logger.log(Level.SEVERE, e.toString());
 			}
 	}
 
@@ -50,6 +55,7 @@ public final class MsgParserThread extends Thread implements MsgParserLoop {
 			try {
 				this.wait();
 			} catch (final InterruptedException e) {
+				logger.log(Level.SEVERE, e.toString());
 			}
 	}
 

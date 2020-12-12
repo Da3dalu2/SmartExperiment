@@ -12,7 +12,6 @@ public:
 
 private:
     uint8_t pin;
-    bool pirState;
 };
 
 #endif // __PIR_H_

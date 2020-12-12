@@ -1,18 +1,14 @@
 #include "Pir.h"
 
-#define CALIBRATION_TIME 20
+#define CALIBRATION_TIME 10
 
 Pir::Pir(uint8_t pin) {
-    this->pirState = LOW;
     this->pin = pin;
     pinMode(pin, INPUT);
 }
 
 bool Pir::isMotionDetected() {
-    bool sensor_value = digitalRead(pin);
-    if ( sensor_value != pirState )
-        pirState = sensor_value;
-    return pirState;
+   return digitalRead(pin);
 }
 
 void Pir::calibrate() {

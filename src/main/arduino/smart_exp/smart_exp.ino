@@ -1,3 +1,8 @@
+/**
+ * Secondo progetto del corso di Sistemi Embedded e IoT
+ * 
+ * Autore: Riccardo Battistini <riccardo.battistini2@studio.unibo.it>
+ */
 #include "Scheduler.h"
 #include "SchedulerManager.h"
 
@@ -9,7 +14,7 @@ void setup() {
     schedulerManager = new SchedulerManager();
     scheduler = new Scheduler(schedulerManager);
     schedulerManager->init(scheduler);
-    scheduler->init(1000); // MCM of all other tasks, milliseconds
+    scheduler->init(50); // MCM of all other tasks, milliseconds
 }
 
 void loop() {

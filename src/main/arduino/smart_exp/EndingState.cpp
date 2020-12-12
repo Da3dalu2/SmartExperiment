@@ -7,7 +7,7 @@ EndingState::EndingState(UpdateStatusTask* task) {
 }
 
 void EndingState::execute() {
-    endConfirmationReceived = task->isEndConfirmationReceived();
+    /*endConfirmationReceived = task->isEndConfirmationReceived();
     exitConfirmed = task->isExitConfirmed();
     if ( endConfirmationReceived ) {
         if ( exitConfirmed ) {
@@ -16,9 +16,8 @@ void EndingState::execute() {
             task->updateState(new RunningState(task));
         }
         logger.log("resolving Ending state");
-    }
+    }*/
     task->updateState(new ReadyState(task));
-    
 }
 
 EnumState EndingState::getState() {

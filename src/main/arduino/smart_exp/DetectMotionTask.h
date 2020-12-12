@@ -5,6 +5,7 @@
 #include "Pir.h"
 #include "TaskDirector.h"
 #include "Communicator.h"
+#include <avr/sleep.h>
 
 class DetectMotionTask: public Task, public Communicator {
 

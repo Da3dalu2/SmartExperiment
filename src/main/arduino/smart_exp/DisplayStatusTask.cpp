@@ -19,7 +19,7 @@ void DisplayStatusTask::init(uint32_t period) {
 }
 
 void DisplayStatusTask::tick() {
-    logger.log("[DISPLAY-STATUS]: ");
+    //logger.log("[DISPLAY-STATUS]: ");
     microStatus->displayStatus(currentState);
     viewerStatus->displayStatusOnViewer(currentState);
 }
